@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,
+  initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>My Google Map</title>
+  <style>
+    #map{
+      height: 400px;
+      width: 100%
+    }
+  </style>
+</head>
+<body>
+
+
+
+<h1>My Google Map</h1>
+
+<input id="pac-input" class="controls" type="text" placeholder="Search Box">
+<div id="map"></div>
+<script>
+  //Map options
+  function initMap(){
+    var options = {
+      zoom:8,
+      center: {lat:43.6532, lng:-79.3832}
+    }
+
+    //New map
+    var map = new 
+    google.maps.Map(document.getElementById('map'), options);
+
+    //add eventListener for map clicks
+    google.maps.event.addListener(map, 'click', 
+    function(event){
+      addMarker({coords:event.latLng});
+    });
+
+    //Array of markers
+
+    var markers = [
+              {coords: {lat:43.725422,lng:-79.452106},
+              content: '<h1>Cheesecake Factory</h1>',
+              description: '<h3>Best new restaurant in the city!</h3>',
+              iconImage: 'https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png'
+              },
+              {coords: {lat:43.649447,lng:-79.386370},
+              content: '<h1>MoMo Fuku</h1>',
+              iconImage: 'https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png'
+              }
+    ];
+
+    //loop array markers
+    for (var i = 0; i < markers.length; i++){
+      addMarker(markers[i])
+    }
+
+    // Create the search box and link it to the UI element.
+    // var input = document.getElementById('pac-input');
+    // var searchBox = new google.maps.places.SearchBox(input);
+
+    //Add market function
+    function addMarker(props){
+      var marker = new google.maps.Marker({
+        position:props.coords,
+        map:map
+      });
+      //Check for custom icon
+      if(props.iconImage){
+        //Set icon image
+        marker.setIcon(props.iconImage);
+      }
+
+      //Check content
+      if(props.content){
+        var infoWindow = new google.maps.InfoWindow({
+          content: `${props.content}` + `${props.description}`
+        });
+        marker.addListener('mouseover', function(){
+          infoWindow.open(map, marker);
+        });
+      }
+    }
+  }
+
+</script>
+
+  <script async defer
+      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCuw3H9Ze9hLg4XxnnJA6EpzPYs1CAK6qU&callback=initMap">
+    </script>
+
+
+</body>
+</html>
