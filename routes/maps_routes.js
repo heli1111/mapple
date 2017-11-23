@@ -1,55 +1,70 @@
 "use strict";
 
-const express   = require('express');
-const checkUser = require('./checkuser');
-const router    = express.Router();
+const express        = require('express');
+const checkUser      = require('./checkuser');
+const router         = express.Router();
 
 //pre-filter function to check users
+
+// const countFavorites = (this) => {
+//   this
+//     .select("favorites.fav_map_id")
+//     .count("favorites.fav_user_id as fav_count")
+//     .from("favorites")
+//     .groupBy("favorites.fav_map_id")
+//     .as("fav_count_table")
+// }
+
+
 
 module.exports = (knex) => {
 
   router.get("/map", (req, res) => {
     //this route renders the main page with the most favored and most recent maps
     knex
-      .select("maps.*", "pins.*", "fav.count")
+      .select("maps.*", "pins.*", "fav_count_table.fav_count")
       .from("maps")
       .leftOuterJoin("pins", "maps.map_id", "pins.pin_map_id")
-      .leftOuterJoin(function() {
-        this
-        .select("favorites.map_id")
-        .count("favorites.user_id as count")
-        .from("favorites")
-        .groupBy("favorites.map_id")
-        .as("fav")
-        }, "fav.map_id", "maps.id")
+      .leftOuterJoin(
+        function () {
+          this
+            .select("favorites.fav_map_id")
+            .count("favorites.fav_user_id as fav_count")
+            .from("favorites")
+            .groupBy("favorites.fav_map_id")
+            .as("fav_count_table")
+        },
+        "fav_count_table.map_id", "maps.map_id")
       .then((results) => {
         res.json(results);
         })
       .catch((err) => {
-        res.status(400).send('Error happened');
+        res.status(400).send('Error happened, maps cannot be loaded');
         })
   }),
 
   router.get("/map/:id", (req, res) => {
     //this renders a particular map
     knex
-      .select("maps.*", "pins.*", "fav.count")
+      .select("maps.*", "pins.*", "fav_count_table.fav_count")
       .from("maps")
       .leftOuterJoin("pins", "maps.map_id", "pins.pin_map_id")
-      .leftOuterJoin(function() {
-        this
-        .select("favorites.map_id")
-        .count("favorites.user_id as count")
-        .from("favorites")
-        .groupBy("favorites.map_id")
-        .as("fav")
-        }, "fav.map_id", "maps.id")
-      .where("maps.id", req.params.id)
+      .leftOuterJoin(
+        function () {
+          this
+            .select("favorites.fav_map_id")
+            .count("favorites.fav_user_id as fav_count")
+            .from("favorites")
+            .groupBy("favorites.fav_map_id")
+            .as("fav_count_table")
+        },
+        "fav_count_table.map_id", "maps.map_id")
+      .where("maps.map_id", req.params.id)
       .then((results) => {
         res.json(results);
         })
       .catch((err) => {
-        res.status(400).send('Error happened');
+        res.status(400).send('Error happened, map cannot be loaded');
         })
   }),
 
@@ -57,33 +72,80 @@ module.exports = (knex) => {
     //this renders a particular map
     //req.session.user_id is required
     knex
-      .insert([ { map_id: req.params.id }, { user_id: req.session.user_id } ])
+      .insert([ { map_id: req.params.id, user_id: req.session.user_id } ])
       .into("favorites")
+      .then( (result) => {
+        res.status(201);
+        })
+      .catch( (err) => {
+        res.status(501).send('Error happened, map cannot be favored');
+        })
   }),
 
   router.post("/map/new", (req, res) => {
     //this adds a new map
+    //data is coming in the following format:
+      // { (id: *** see comment below ***), name: , description: , createdAt: , coords: { lat: , lng: }, user(=req.session.user_id) }
     checkUser();
     knex
-      .insert([]) //data coming here
+      .insert([{
+        map_id:           id, //*** comment out for testing as long as database id auto-increments - id will be generated
+        map_name:         name,
+        map_description:  description,
+        map_createdAt:    createdAt,
+        map_last_updated: createdAt, //when a map is created, the last updated variable should be the same as the created at
+        map_latitude:     coords.lat,
+        map_longitude:    coords.lng,
+        map_user_id:      user
+        }])
       .into("maps")
+      .then( (result) => {
+        res.status(201);
+        })
+      .catch( (err) => {
+        res.status(501).send('Error happened, map cannot be created');
+      })
 
   }),
 
   router.post("/map/:id/update", (req, res) => {
     //this updates a map
+    //data is coming in the following format:
+      // { (id: *** see comment below ***), name: , description: , last updated, coords: { lat: , lng: } }
     checkUser();
     knex("maps")
-      .where() //.where('published_date', '<', 2000)
-      .update()
+      .where("maps.map_id", "=", req.params.id)
+      // .returning("map_id") //if something need to be returned
+      .update({
+        map_id:           undefined, //*** comment out for testing as long as database id auto-increments - id will be generated
+        map_name:         name,
+        map_description:  description,
+        map_createdAt:    undefined, //cannot change
+        map_last_updated: last_updated,
+        map_latitude:     coords.lat,
+        map_longitude:    coords.lng,
+        map_user_id:      undefined //cannot change
+        })
+      .then( (result) => {
+        res.status(202);
+        })
+      .catch( (err) => {
+        res.status(501);
+        })
   }),
 
   router.post("/map/:id/delete", (req, res) => {
     //this deletes a map
     checkUser();
     knex("maps")
-      .where() //filters
+      .where("maps.map_id", "=", req.params.id)
       .del()
+      .then( (result) => {
+        res.status(202);
+        })
+      .catch( (err) => {
+        res.status(501);
+        })
   })
 
   return router;

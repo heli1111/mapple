@@ -15,6 +15,7 @@ const morgan         = require('morgan');
 const knexLogger     = require('knex-logger');
 
 // Seperated Routes for each Resource
+const countFavorites = require('./countFavorites');
 const usersRoutes    = require("./routes/users");
 const mapsRoutes     = require("./routes/maps");
 const pinsRoutes     = require("./routes/pins");
