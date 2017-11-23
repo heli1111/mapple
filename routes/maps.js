@@ -30,6 +30,17 @@ module.exports = (knex) => {
     });
   }),
 
+  router.post("/map/:id/favor", (req, res) => {
+    //this renders a particular map
+    knex
+      .select("*")
+      .from("maps") //join map and user
+      .where() //filters
+      .then((results) => {
+        res.json(results);
+    });
+  }),
+
   router.post("/map/new", (req, res) => {
     //this adds a new map
     checkUser();

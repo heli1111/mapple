@@ -46,7 +46,7 @@ app.use("/pins/", pinsRoutes(knex));
 
 // Home page
 
-//redirects to /map?
+//redirects to /maps?
 app.get("/", (req, res) => {
   res.render("index");
 });
