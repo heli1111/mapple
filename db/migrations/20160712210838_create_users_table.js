@@ -1,6 +1,9 @@
+// Database Table for Users
+
 exports.up = function(knex, Promise) {
   return knex.schema.createTable('users', function (table) {
-    table.increments('').primary();
+    table.increments('id').primary();
+    table.string('username');
     table.string('password');
     table.string('email');
   });

@@ -1,4 +1,6 @@
 
+// Database Table for Favorites 
+
 exports.up = function(knex, Promise) {
     return knex.schema.createTable('favorites', function (table) {
         table.integer('user_id').unsigned().references('id').inTable('users');
