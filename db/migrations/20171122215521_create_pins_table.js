@@ -2,13 +2,13 @@
 
 exports.up = function(knex, Promise) {
     return knex.schema.createTable('pins', function (table) {
-        table.increments('id').primary();
-        table.string('name');
-        table.string('description');
-        table.string('image');
-        table.dateTime('createdAt').notNull();
-        table.integer('user_id').unsigned().references('id').inTable('users');
-        table.integer('map_id').unsigned().references('id').inTable('maps')
+        table.increments('pin_id').primary();
+        table.string('pin_name');
+        table.string('pin_description');
+        table.string('pin_image');
+        table.dateTime('pin_createdAt').notNull();
+        table.integer('pin_user_id').unsigned().references('user_id').inTable('users');
+        table.integer('pin_map_id').unsigned().references('map_id').inTable('maps')
     });
 };
 
