@@ -15,6 +15,8 @@ const morgan         = require('morgan');
 const knexLogger     = require('knex-logger');
 
 // Seperated Routes for each Resource
+
+const countFavorites = require("./countFavorites");
 const usersRoutes    = require("./routes/users_routes");
 const mapsRoutes     = require("./routes/maps_routes");
 const pinsRoutes     = require("./routes/pins_routes");
@@ -40,9 +42,9 @@ app.use(express.static("public"));
 // Mount all resource routes
 
 
-app.use("/users/", usersRoutes(knex));
-app.use("/maps/", mapsRoutes(knex));
-app.use("/pins/", pinsRoutes(knex));
+app.use("/user/", usersRoutes(knex));
+app.use("/map/", mapsRoutes(knex));
+app.use("/map/:id/pin/", pinsRoutes(knex));
 
 // Home page
 
