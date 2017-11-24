@@ -11,13 +11,10 @@ function initMap(){
     ];
 
     for(let mapDiv of mapList) {
-
         console.log(document.getElementById(mapDiv));
-
 
     //New map
     var map = new 
-    
     google.maps.Map(document.getElementById(mapDiv), options);
     
     //add eventListener for map clicks
