@@ -43,6 +43,10 @@
     //add eventListener for map clicks
     google.maps.event.addListener(map, 'click', 
     function(event){
+      let lat = event.latLng.lat();
+      let lng = event.latLng.lng();
+      coords:event.LatLng =  {lat: lat, lng: lng};
+      console.log({coords:event.LatLng});
       addMarker({coords:event.latLng});
     });
     //Array of markers
@@ -74,9 +78,6 @@
       searchBox.setBounds(map.getBounds());
     });
 
-
-
-
     google.maps.event.addListener(searchBox, 'places_changed', function(){
       var places = searchBox.getPlaces();
       var bounds = new google.maps.LatLngBounds();
@@ -89,15 +90,12 @@
       map.setZoom(15);
     });
 
-
-
-
-
-
-
-
     //Add market function
     function addMarker(props){
+      console.log(props.coords);
+      debugger
+      $(".container-new-pin").slideToggle("fast");
+
       var marker = new google.maps.Marker({
         position:props.coords,
         map:map,
@@ -118,15 +116,34 @@
         });
       }
     }
-
   }
 
 </script>
 
+    <!-- Page-specific (main) content here -->
+  <main class="container">
+    <section class="container-new-pin">
+      <h2 class="title">Enter Pin Data!</h2>
+      <form class="tweets" action="/tweets/" method="POST">
+        Select image to upload:
+        <input type="file" name="fileToUpload" id="fileToUpload">
+        <textarea class ="pin-title" name="text" placeholder="title"></textarea>
+        <textarea class ="pin-description" name="text" placeholder="Description"></textarea>
+        <input class="tweet-button" type="submit" value="Submit">
+        <span class="counter"></span>
+      </form>
+    </section>
+
   <script async defer
       src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCuw3H9Ze9hLg4XxnnJA6EpzPYs1CAK6qU&callback=initMap&libraries=places">
+  </script>
+  
+  <link rel="stylesheet" href="./public/styles/pinForm.css" type="text/css" />
 
-    </script>
+  <script
+  src="https://code.jquery.com/jquery-3.2.1.js"
+  integrity="sha256-DZAnKJ/6XZ9si04Hgrsxu/8s717jcIzLy3oi35EouyE="
+  crossorigin="anonymous"></script>
 
 
 </body>
