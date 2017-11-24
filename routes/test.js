@@ -47,6 +47,8 @@ const data = {
           "fav_count_table.fav_map_id", "maps.map_id")
       .where("maps.map_user_id", req.params.id)
       .orWhere("pins.pin_user_id", req.params.id)
+      .orderBy("pin_id", "asc")
+      .limit(2)
       .then((results) => {
         console.log(results);
         })
