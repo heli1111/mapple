@@ -46,10 +46,18 @@ app.use("/pins/", pinsRoutes(knex));
 
 // Home page
 
-//redirects to /maps?
+//redirects to /maps? -- Testing (for Jessica)
 app.get("/", (req, res) => {
   res.render("index");
 });
+
+app.get("/map", (req, res) => {
+  res.render("map")
+})
+
+app.get("/user", (req, res) => {
+  res.render("user")
+})
 
 
 app.listen(PORT, () => {
