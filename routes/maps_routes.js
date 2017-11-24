@@ -85,16 +85,21 @@ module.exports = (knex) => {
         })
   }),
 
+  router.get("/map/new", (req, res) => {
+
+  })
+
   router.post("/map/new", (req, res) => {
     //this adds a new map
     //data is coming in the following format:
-      // { (id: *** see comment below ***), name: , description: , createdAt: , coords: { lat: , lng: }, user(=req.session.user_id) }
+      // { (id: *** see comment below ***), name: , description: , image: , createdAt: , coords: { lat: , lng: }, user(=req.session.user_id) }
     checkUser();
     knex
       .insert([{
         map_id:           req.body.id, //*** comment out for testing as long as database id auto-increments - id will be generated
         map_name:         req.body.name,
         map_description:  req.body.description,
+        map_image:        req.body.image
         map_createdAt:    req.body.createdAt,
         map_last_updated: req.body.createdAt, //when a map is created, the last updated variable should be the same as the created at
         map_latitude:     req.body.coords.lat,
@@ -123,6 +128,7 @@ module.exports = (knex) => {
         map_id:           undefined, //cannot change
         map_name:         req.body.name,
         map_description:  req.body.description,
+        map_image:        req.body.image,
         map_createdAt:    undefined, //cannot change
         map_last_updated: req.body.last_updated,
         map_latitude:     req.body.coords.lat,
