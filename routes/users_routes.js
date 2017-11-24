@@ -60,7 +60,6 @@ module.exports = (knex) => {
       })
   })
 
-
   //,
 
   // router.post("/user/new", (req, res) => {

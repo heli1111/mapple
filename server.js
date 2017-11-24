@@ -15,6 +15,7 @@ const morgan         = require('morgan');
 const knexLogger     = require('knex-logger');
 
 // Seperated Routes for each Resource
+
 const countFavorites = require("./countFavorites");
 const usersRoutes    = require("./routes/users_routes");
 const mapsRoutes     = require("./routes/maps_routes");
@@ -47,10 +48,18 @@ app.use("/map/:id/pin/", pinsRoutes(knex));
 
 // Home page
 
-//redirects to /maps?
+//redirects to /maps? -- Testing (for Jessica)
 app.get("/", (req, res) => {
   res.render("index");
 });
+
+app.get("/map", (req, res) => {
+  res.render("map")
+})
+
+app.get("/user", (req, res) => {
+  res.render("user")
+})
 
 
 app.listen(PORT, () => {
