@@ -15,10 +15,10 @@ const morgan         = require('morgan');
 const knexLogger     = require('knex-logger');
 
 // Seperated Routes for each Resource
-const countFavorites = require('./countFavorites');
-const usersRoutes    = require("./routes/users");
-const mapsRoutes     = require("./routes/maps");
-const pinsRoutes     = require("./routes/pins");
+const countFavorites = require("./countFavorites");
+const usersRoutes    = require("./routes/users_routes");
+const mapsRoutes     = require("./routes/maps_routes");
+const pinsRoutes     = require("./routes/pins_routes");
 
 // Load the logger first so all (static) HTTP requests are logged to STDOUT
 // 'dev' = Concise output colored by response status for development use.

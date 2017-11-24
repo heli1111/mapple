@@ -8,3 +8,17 @@ $(() => {
     }
   });;
 });
+
+//loading pages
+
+//page 1: map (main page)
+
+// $.ajax({
+//   url: "/map",
+//   method "GET"
+// })
+
+// $.ajax({
+//   url: "/map/:id",
+//   method "GET"
+// })
