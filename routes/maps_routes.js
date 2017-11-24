@@ -1,10 +1,10 @@
 "use strict";
 
-const express        = require('express');
-const checkUser      = require('./checkuser');
-const router         = express.Router();
-
+const express   = require('express');
 //pre-filter function to check users
+const checkUser = require('./checkuser');
+const router    = express.Router();
+
 
 // const countFavorites = (this) => {
 //   this
@@ -34,7 +34,7 @@ module.exports = (knex) => {
             .groupBy("favorites.fav_map_id")
             .as("fav_count_table")
         },
-        "fav_count_table.map_id", "maps.map_id")
+        "fav_count_table.fav_map_id", "maps.map_id")
       .then((results) => {
         res.json(results);
         })
@@ -58,7 +58,7 @@ module.exports = (knex) => {
             .groupBy("favorites.fav_map_id")
             .as("fav_count_table")
         },
-        "fav_count_table.map_id", "maps.map_id")
+        "fav_count_table.fav_map_id", "maps.map_id")
       .where("maps.map_id", req.params.id)
       .then((results) => {
         res.json(results);
@@ -72,7 +72,10 @@ module.exports = (knex) => {
     //this renders a particular map
     //req.session.user_id is required
     knex
-      .insert([ { map_id: req.params.id, user_id: req.session.user_id } ])
+      .insert([{
+        map_id:  req.params.id,
+        user_id: req.session.user_id //or req.body.user_id if session.user_id is passed into the incoming data
+        }])
       .into("favorites")
       .then( (result) => {
         res.status(201);
@@ -89,14 +92,14 @@ module.exports = (knex) => {
     checkUser();
     knex
       .insert([{
-        map_id:           id, //*** comment out for testing as long as database id auto-increments - id will be generated
-        map_name:         name,
-        map_description:  description,
-        map_createdAt:    createdAt,
-        map_last_updated: createdAt, //when a map is created, the last updated variable should be the same as the created at
-        map_latitude:     coords.lat,
-        map_longitude:    coords.lng,
-        map_user_id:      user
+        map_id:           req.body.id, //*** comment out for testing as long as database id auto-increments - id will be generated
+        map_name:         req.body.name,
+        map_description:  req.body.description,
+        map_createdAt:    req.body.createdAt,
+        map_last_updated: req.body.createdAt, //when a map is created, the last updated variable should be the same as the created at
+        map_latitude:     req.body.coords.lat,
+        map_longitude:    req.body.coords.lng,
+        map_user_id:      req.body.user
         }])
       .into("maps")
       .then( (result) => {
@@ -111,19 +114,19 @@ module.exports = (knex) => {
   router.post("/map/:id/update", (req, res) => {
     //this updates a map
     //data is coming in the following format:
-      // { (id: *** see comment below ***), name: , description: , last updated, coords: { lat: , lng: } }
+      // { name: , description: , last updated, coords: { lat: , lng: } }
     checkUser();
     knex("maps")
-      .where("maps.map_id", "=", req.params.id)
+      .where("maps.map_id", req.params.id)
       // .returning("map_id") //if something need to be returned
       .update({
-        map_id:           undefined, //*** comment out for testing as long as database id auto-increments - id will be generated
-        map_name:         name,
-        map_description:  description,
+        map_id:           undefined, //cannot change
+        map_name:         req.body.name,
+        map_description:  req.body.description,
         map_createdAt:    undefined, //cannot change
-        map_last_updated: last_updated,
-        map_latitude:     coords.lat,
-        map_longitude:    coords.lng,
+        map_last_updated: req.body.last_updated,
+        map_latitude:     req.body.coords.lat,
+        map_longitude:    req.body.coords.lng,
         map_user_id:      undefined //cannot change
         })
       .then( (result) => {
@@ -138,7 +141,7 @@ module.exports = (knex) => {
     //this deletes a map
     checkUser();
     knex("maps")
-      .where("maps.map_id", "=", req.params.id)
+      .where("maps.map_id", req.params.id)
       .del()
       .then( (result) => {
         res.status(202);
