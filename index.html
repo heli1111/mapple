@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,
+  initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>My Google Map</title>
+  <style>
+    #map{
+      height: 400px;
+      width: 100%
+    }
+    #pac-input{
+      background-color: #fff;
+      font-family: Roboto;
+      font-size: 15px;
+      font-weight: 300;
+      margin-left: 12px;
+      padding: 0 11px 0 13px;
+      text-overflow: ellipsis;
+      width: 400px;
+  }
+  </style>
+</head>
+<body>
+
+<h1>My Google Map</h1>
+
+<input id="pac-input" class="controls" type="text" placeholder="Search Box">
+<div id="map"></div>
+<script>
+  //Map options
+  function initMap(){
+    var options = {
+      zoom:8,
+      center: {lat:43.6532, lng:-79.3832}
+    }
+    //New map
+    var map = new 
+    google.maps.Map(document.getElementById('map'), options);
+    //add eventListener for map clicks
+    google.maps.event.addListener(map, 'click', 
+    function(event){
+      addMarker({coords:event.latLng});
+    });
+    //Array of markers
+    var markers = [
+              {coords: {lat:43.725422,lng:-79.452106},
+              content: '<h2>Cheesecake Factory</h2>',
+              description: '<h3>Best new restaurant in the city!</h3>',
+              iconImage: 'https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png',
+              image: '<img src="https://www.fillmurray.com/g/140/100">'
+
+              },
+              {coords: {lat:43.649447,lng:-79.386370},
+              content: '<h2>MoMo Fuku</h2>',
+              iconImage: 'https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png'
+              }
+    ];
+    //loop array markers
+    for (var i = 0; i < markers.length; i++){
+      addMarker(markers[i])
+    }
+
+    // Create the search box and link it to the UI element.
+    var input = document.getElementById('pac-input');
+    var searchBox = new google.maps.places.SearchBox(input);
+    map.controls[google.maps.ControlPosition.TOP_LEFT].push(input);
+
+    // Bias the SearchBox results towards current map's viewport.
+    map.addListener('bounds_changed', function(){
+      searchBox.setBounds(map.getBounds());
+    });
+
+
+
+
+    google.maps.event.addListener(searchBox, 'places_changed', function(){
+      var places = searchBox.getPlaces();
+      var bounds = new google.maps.LatLngBounds();
+      const place = places[0];
+      bounds.extend(place.geometry.location);
+      // for (i=0; place=places[i]; i++){
+      //   // marker.setPosition(place.geometry.location);
+      // }
+      map.fitBounds(bounds);
+      map.setZoom(15);
+    });
+
+
+
+
+
+
+
+
+    //Add market function
+    function addMarker(props){
+      var marker = new google.maps.Marker({
+        position:props.coords,
+        map:map,
+        draggable:true
+      });
+      //Check for custom icon
+      if(props.iconImage){
+        //Set icon image
+        marker.setIcon(props.iconImage);
+      }
+      //Check content
+      if(props.content){
+        var infoWindow = new google.maps.InfoWindow({
+          content: `${props.content || ''}` + `${props.description || ''}` + `${props.image || ''}`
+        });
+        marker.addListener('mouseover', function(){
+          infoWindow.open(map, marker);
+        });
+      }
+    }
+
+  }
+
+</script>
+
+  <script async defer
+      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCuw3H9Ze9hLg4XxnnJA6EpzPYs1CAK6qU&callback=initMap&libraries=places">
+
+    </script>
+
+
+</body>
+</html>
