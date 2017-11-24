@@ -24,7 +24,6 @@ module.exports = (knex) => {
     knex
       .insert([]) //data coming here
       .into("users")
-
   }),
 
   router.post("user/:id/update", (req, res) => {
