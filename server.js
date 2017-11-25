@@ -44,24 +44,24 @@ app.get("/map/new", (req, res) => {
   res.render("map");
 });
 
-app.use("/user/", usersRoutes(knex));
-app.use("/map/", mapsRoutes(knex));
-app.use("/map/:id/pin/", pinsRoutes(knex));
+// app.use("/user/", usersRoutes(knex));
+// app.use("/map/", mapsRoutes(knex));
+// app.use("/map/:id/pin/", pinsRoutes(knex));
 
 // Home page
 
 //redirects to /maps? -- Testing (for Jessica)
-// app.get("/", (req, res) => {
-//   res.render("index");
-// });
+app.get("/", (req, res) => {
+  res.render("index");
+});
 
-// app.get("/map", (req, res) => {
-//   res.render("map")
-// })
+app.get("/map", (req, res) => {
+  res.render("map")
+})
 
-// app.get("/user", (req, res) => {
-//   res.render("user")
-// })
+app.get("/user", (req, res) => {
+  res.render("user")
+})
 
 
 app.listen(PORT, () => {
