@@ -8,11 +8,12 @@
         </div>
         <form class="navbar-form navbar-right">
             <div class="form-group">
-                <input type="text" style="margin-right:10px;"class="form-control" placeholder="Username">
-                <input type="text" style="margin-right:10px;"class="form-control" placeholder="Password">
+                <input id="login-username" type="text" style="margin-right:10px;" class="form-control" placeholder="Username">
+                <input id="login-password" type="password" style="margin-right:10px;" class="form-control" placeholder="Password">
+                <input id="login" type="submit" value="Sign in" class="btn btn-default btn-sm" style="width:90px;margin-right:10px;">
             </div>
-            <button type="button" style="width:90px;margin-right:10px;" class="btn btn-default btn-sm">Login</button>
-            <button type="button" style="width:90px" class="btn btn-default btn-sm">Register</button>
+<!--             <button id="login-btn" type="button" style="width:90px;margin-right:10px;" class="btn btn-default btn-sm">Login</button> -->
+<!--             <button type="button" style="width:90px" class="btn btn-default btn-sm">Register</button> -->
         </form>
     </div>
 </nav>
@@ -20,3 +21,6 @@
     <button type="button" style="width:90px;margin-right:10px;" class="btn btn-default">New Map</button>
     <button type="button" style="width:90px" class="btn btn-default">My Maps</button>
 </div>
+
+
+<!-- method="POST" action="/users/"  -->
