@@ -1,13 +1,11 @@
 "use strict";
 
 const express   = require('express');
-//pre-filter function to check users
-const checkUser = require('./checkuser');
 const router    = express.Router();
 
 module.exports = (knex) => {
 
-  router.get("/", (req, res) =>{
+  router.get("/", (req, res) => {
     //this route renders the main page with the most favored and most recent maps
     let mapData =
       knex
