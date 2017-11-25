@@ -7,7 +7,7 @@ const router    = express.Router();
 
 module.exports = (knex) => {
 
-  router.get("/map", (req, res) => {
+  router.get("/", (req, res) =>{
     //this route renders the main page with the most favored and most recent maps
     let mapData =
       knex
@@ -97,8 +97,9 @@ module.exports = (knex) => {
 
   // })
 
-  router.post("/map/new", (req, res) => {
+  router.post("/:map_id", (req, res) =>{
     //this adds a new map
+    // render map.ejs template with new map information
     //data is coming in the following format:
       // { (id: *** see comment below ***), name: , description: , image: , createdAt: , coords: { lat: , lng: }, user(=req.session.user_id) }
     checkUser();
@@ -107,7 +108,7 @@ module.exports = (knex) => {
         map_id:           req.body.id, //*** comment out for testing as long as database id auto-increments - id will be generated
         map_name:         req.body.name,
         map_description:  req.body.description,
-        map_image:        req.body.image
+        map_image:        req.body.image,
         map_createdAt:    req.body.createdAt,
         map_last_updated: req.body.createdAt, //when a map is created, the last updated variable should be the same as the created at
         map_latitude:     req.body.coords.lat,
@@ -124,7 +125,7 @@ module.exports = (knex) => {
 
   }),
 
-  router.post("/map/:id/update", (req, res) => {
+  router.put("/:map_id", (req, res) => {
     //this updates a map
     //data is coming in the following format:
       // { name: , description: , last updated, coords: { lat: , lng: } }
@@ -151,7 +152,7 @@ module.exports = (knex) => {
         })
   }),
 
-  router.post("/map/:id/delete", (req, res) => {
+  router.delete("/:map_id", (req, res) => {
     //this deletes a map
     checkUser();
     knex("maps")

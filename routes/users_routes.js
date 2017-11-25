@@ -8,8 +8,8 @@ const router    = express.Router();
 
 module.exports = (knex) => {
 
-  router.get("/user/:id/", (req, res) => {
-
+  router.get("/:user_id", (req, res) => {
+    // renders index.ejs template with single_user variables
     let getUsersFavorites = (id) => {
       let mapData =
         knex
@@ -110,7 +110,7 @@ module.exports = (knex) => {
 
   //,
 
-  // router.post("/user/new", (req, res) => {
+  // router.post("/:user_id", (req, res) =>{
   //   //this adds a new user - feature not included
   //   knex
   //     .insert([]) //data coming here
@@ -118,14 +118,14 @@ module.exports = (knex) => {
 
   // }),
 
-  // router.post("user/:id/update", (req, res) => {
+  // router.put("/:user_id", (req, res) => {
   //   //this updates a user - feature not included
   //   knex("users")
   //     .where() //where('published_date', '<', 2000)
   //     .update()
   // }),
 
-  // router.post("user/:id/delete", (req, res) => {
+  // router.delete("/:user_id", (req, res) => {
   //   //this deletes a user - feature not included
   //   knex("users")
   //     .where() //filters
