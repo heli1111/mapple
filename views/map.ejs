@@ -11,32 +11,60 @@
     <% include partials/_navbar %>
     <% include partials/_subnavbar %>
     <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <h1><%=map.map_name%></h1>
+            </div>
+        </div>
         <!-- google map -->
         <div class="row">
             <div class="col-md-12">
                 <div id="map"></div>
             </div>
         </div>
-
-        <!-- form -->  
-        <div class="row" style="padding:0;margin:0;">
-            <div class="col-lg-5 col-md-6 col-sm-7">
-                <div class="form-group">
-                    <label for="name">Pin Name</label>
-                    <input type="name" class="form-control" id="name" placeholder="name">
-                </div>
-                <div class="form-group">
-                    <label for="description">Description</label>
-                    <textarea type="description" class="form-control" rows="2" id="description" placeholder="Description"></textarea>
-                 </div>
-                <div class="form-group">
-                    <label for="image">Image Upload</label>
-                    <input type="file" id="image">
-                    <p class="help-block">Optional</p>
-                </div>
-                <button type="submit" class="btn btn-default">Add Pin</button>
-            </div>
+        <!-- modal form -->
+        <div class="row">
+            <div id="addPinModal" class="modal fade" tabindex="-1" role="dialog">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                            <h4 class="modal-title">Create New Pin</h4>
+                        </div>
+                        <div class="modal-body">
+                            <form>
+                                <div class="form-group">
+                                    <label for="addPinName" class="control-label">Name: </label>
+                                    <input type="text" class="form-control" id="addPinName">
+                                </div>
+                                <div class="form-group">
+                                    <label for="addPinDescription" class="control-label">Description: </label>
+                                    <input type="text" class="form-control" id="addPinDescription">
+                                </div>
+                                <div class="form-group">
+                                    <label for="addPinImage" class="control-label">Image URL: </label>
+                                    <input type="text" class="form-control" id="addPinImage">
+                                </div>
+                                <div class="form-group">
+                                    <label for="addPinLatitude" class="control-label">Latitude: </label>
+                                    <input type="text" class="form-control" id="addPinLatitude">
+                                </div>
+                                <div class="form-group">
+                                    <label for="addPinLongitude" class="control-label">Longitude: </label>
+                                    <input type="text" class="form-control" id="addPinLongitude">
+                                </div>
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                            <button id="addPinSave" type="button" class="btn btn-primary">Save</button>
+                        </div>
+                    </div><!-- /.modal-content -->
+                </div><!-- /.modal-dialog -->
+            </div><!-- /.modal -->
+            
         </div>
+
     </div>
     <% include partials/_footer %>
     <script
@@ -44,8 +72,94 @@
       integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ="
       crossorigin="anonymous"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
-    <script type="text/javascript" src="/scripts/app.js"></script>
-    <script type="text/javascript" src="/scripts/maps.js"></script>
+    <script>
+        // initialize google map
+        initMap = () => {
+
+            let map = new google.maps.Map(document.getElementById('map'), {
+                center: {lat: <%=map.map_latitude%>, lng: <%=map.map_longitude%>},
+                zoom: 8
+            });
+
+            // pin save button listener
+            $('#addPinSave').click(() => {
+
+                // prepare data
+                let data = {
+                    pin_name: $('#addPinName').val(),
+                    pin_description: $('#addPinDescription').val(),
+                    pin_image: $('#addPinImage').val(),
+                    pin_latitude: $('#addPinLatitude').val(),
+                    pin_longitude: $('#addPinLongitude').val()
+                };
+
+                // send create pin put request
+                $.ajax({
+                    url: '<%=map_id%>/pins',
+                    type: 'POST',
+                    data: JSON.stringify(data),
+                    contentType: 'application/json'
+                }).done((resp) => {
+                    console.log(resp);
+                    // add pin to map
+                    addMarker(data, map);
+                }).fail((resp) => {
+                    console.log(resp);
+                    alert("FAILED TO ADD PIN");
+                });
+
+                // close modal
+                $('#addPinModal').modal('hide');
+            });
+
+            // map click listener
+            map.addListener('click', (event) => {
+                
+                // get lat/lng
+                let lat = event.latLng.lat();
+                let lng = event.latLng.lng();
+                
+                // initialize modal form data
+                $('#addPinName').val('');
+                $('#addPinDescription').val('');
+                $('#addPinImage').val('');
+                $('#addPinLatitude').val(lat);
+                $('#addPinLongitude').val(lng);
+                
+                // show modal
+                $('#addPinModal').modal('show');
+
+            });
+
+            // get all pins and show on the map
+            $.get('<%=map_id%>/pins', (resp) => {
+                console.log("all pins: " + JSON.stringify(resp));
+                for(let key in resp) {
+                    let pinData = resp[key];
+                    addMarker(pinData, map);
+                }
+            });
+
+        };
+
+        // display marker on the map
+        addMarker = (pinData, map) => {
+            let icon = {
+                url: pinData.pin_image,
+                scaledSize: new google.maps.Size(40, 40)
+            };
+            let marker = new google.maps.Marker({
+                position: {
+                    lat: parseFloat(pinData.pin_latitude),
+                    lng: parseFloat(pinData.pin_longitude)
+                },
+                label: pinData.pin_name,
+                icon: icon,
+                map: map
+            });
+        };
+
+    </script>
     <script async defer
       src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCuw3H9Ze9hLg4XxnnJA6EpzPYs1CAK6qU&callback=initMap">
     </script>

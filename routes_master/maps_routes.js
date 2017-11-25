@@ -41,7 +41,7 @@ module.exports = (knex) => {
       })
   }),
 
-  router.get("/map/:id", (req, res) => {
+  router.get("/:map_id", (req, res) => {
     //this selects data for a particular map
     let mapData =
       knex
@@ -57,13 +57,13 @@ module.exports = (knex) => {
               .as("fav_count_table")
           },
           "fav_count_table.fav_map_id", "maps.map_id")
-        .where("maps.map_id", req.params.id)
+        .where("maps.map_id", req.params.map_id)
 
     let pinData =
       knex
         .select("*")
         .from("pins")
-        .where("pins.pin_map_id", req.params.id)
+        .where("pins.pin_map_id", req.params.map_id)
 
     Promise.all([mapData, pinData])
       .then( (result) => {
