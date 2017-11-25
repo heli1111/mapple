@@ -9,81 +9,104 @@ const router    = express.Router();
 module.exports = (knex) => {
 
   router.get("/user/:id/", (req, res) => {
-  // router.get("/user/:id/favored", (req, res) => {
-    //this returns the top three favored maps that the user also favored
 
     let getUsersFavorites = (id) => {
-      knex
-        .select("maps.*", "pins.*", "fav_count_table.fav_count")
-        .from("maps")
-        .leftOuterJoin("favorites", "favorites.fav_map_id", "maps.map_id")
-        .leftOuterJoin("pins", "maps.map_id", "pins.pin_map_id")
-        .leftOuterJoin(
-          function () {
-            this
-              .select("favorites.fav_map_id")
-              .count("favorites.fav_user_id as fav_count")
-              .from("favorites")
-              .groupBy("favorites.fav_map_id")
-              .as("fav_count_table")
-            },
-            "fav_count_table.fav_map_id", "maps.map_id")
-        .where("favorites.fav_user_id", id)
-        .orderBy("fav_count", "desc")
-        .limit(3)
-        .then((results) => {
-          if (results) {
-            return results;
-          }
-          //res.json(results);
-          })
-        .catch((err) => {
-          return err;
-          //res.status(400).send('Error happened, user\'s maps cannot be loaded');
-        })
-    }
-  // }),
+      let mapData =
+        knex
+          .select("maps.*", "fav_count_table.fav_count")
+          .from("maps")
+          .leftOuterJoin("favorites", "favorites.fav_map_id", "maps.map_id")
+          .leftOuterJoin(
+            function () {
+              this
+                .select("favorites.fav_map_id")
+                .count("favorites.fav_user_id as fav_count")
+                .from("favorites")
+                .groupBy("favorites.fav_map_id")
+                .as("fav_count_table")
+              },
+              "fav_count_table.fav_map_id", "maps.map_id")
+          .where("favorites.fav_user_id", id)
+          .orderBy("fav_count", "desc")
 
-  // router.get("/user/:id/contributed", (req, res) => {
-    //this returns the maps to which the user contributed --> maps that belong to a user through map or pin ownership
-    let getUsersContributions = (id) => {
-      knex
-        .select("maps.*", "pins.*", "fav_count_table.fav_count")
-        .from("maps")
-        .leftOuterJoin("pins", "maps.map_id", "pins.pin_map_id")
-        .leftOuterJoin(
-          function () {
-            this
-              .select("favorites.fav_map_id")
-              .count("favorites.fav_user_id as fav_count")
-              .from("favorites")
-              .groupBy("favorites.fav_map_id")
-              .as("fav_count_table")
-            },
-            "fav_count_table.fav_map_id", "maps.map_id")
-        .where("maps.map_user_id", id)
-        .orWhere("pins.pin_user_id", id)
-        .then((results) => {
-          if (results) {
-            return results;
-          }
-          // res.json(results);
+      let pinData =
+        knex
+          .select("pins.*")
+          .from("maps")
+          .leftOuterJoin("favorites", "favorites.fav_map_id", "maps.map_id")
+          .leftOuterJoin("pins", "maps.map_id", "pins.pin_map_id")
+          .where("favorites.fav_user_id", id)
+          .orderBy("fav_count", "desc")
+
+      Promise.all([mapData,pinData])
+        .then( (result) => {
+          res.json({
+            mapData: result[0],
+            pinData: result[1]
           })
-        .catch((err) => {
-          return err;
-          //res.status(400).send('Error happened, user\'s maps cannot be loaded');
+        })
+        .catch( (err) => {
+          res.status(400).send('Error happened, user maps cannot be loaded');
         })
     }
-  // })
+
+    let getUsersContributions = (id) => {
+      let mapData =
+        knex
+          .select("maps.*")
+          .max("fav_count_table.fav_count as fav_count")
+          .from("maps")
+          .leftOuterJoin("pins", "maps.map_id", "pins.pin_map_id")
+          .leftOuterJoin(
+            function () {
+              this
+                .select("favorites.fav_map_id")
+                .count("favorites.fav_user_id as fav_count")
+                .from("favorites")
+                .groupBy("favorites.fav_map_id")
+                .as("fav_count_table")
+              },
+              "fav_count_table.fav_map_id", "maps.map_id")
+          .where("maps.map_user_id", id)
+          .orWhere("pins.pin_user_id", id)
+          .groupBy("maps.map_id")
+
+      let pinData =
+        knex
+          .select("pins.*")
+          .from("maps")
+          .leftOuterJoin("pins", "maps.map_id", "pins.pin_map_id")
+          .leftOuterJoin(
+            function () {
+              this
+                .select("favorites.fav_map_id")
+                .count("favorites.fav_user_id as fav_count")
+                .from("favorites")
+                .groupBy("favorites.fav_map_id")
+                .as("fav_count_table")
+              },
+              "fav_count_table.fav_map_id", "maps.map_id")
+          .where("maps.map_user_id", id)
+          .orWhere("pins.pin_user_id", id)
+
+      Promise.all([mapData,pinData])
+        .then( (result) => {
+          res.json({
+            mapData: result[0],
+            pinData: result[1]
+          })
+        })
+        .catch( (err) => {
+          res.status(400).send('Error happened, user maps cannot be loaded');
+        })
+    }
 
     return {
       usersFavorites: getUsersFavorites(req.params.id),
       usersContributions: getUsersContributions(req.params.id)
     }
 
-
-
-
+//the routes below are not used as long as user registration doesn't exist
 
   //,
 
@@ -110,4 +133,6 @@ module.exports = (knex) => {
   // })
 
   return router;
+
 }
+)}
