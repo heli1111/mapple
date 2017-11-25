@@ -8,8 +8,14 @@ const router    = express.Router();
 
 module.exports = (knex) => {
 
-  router.get("/map/:id1/pin/:id2", (req, res) => {
+  router.get("/", (req, res) => {
+    // // return json data of all pins belong to a map 
+    res.send("ok");
+  });
+
+  router.get("/:pin_id", (req, res) =>{
     //this loads a particular pin
+    // return json data of a pin 
     knex
       .select("*")
       .from("pins")
@@ -23,7 +29,7 @@ module.exports = (knex) => {
         })
   }),
 
-  router.post("/map/:id/pin/new", (req, res) => {
+  router.post("/:pin_id", (req, res) => {
     //this adds a new pin to a specific map
     //data is coming in the following format:
       // { (id: *** see comment below ***), name: , description: , image: , createdAt: , coords: { lat: , lng: }, *map(=the map's id from url), user(=req.session.user_id) }
@@ -50,7 +56,7 @@ module.exports = (knex) => {
 
   }),
 
-  router.post("/map/:id1/pin/:id2/update", (req, res) => {
+  router.put("/:pin_id", (req, res) => {
     //this updates a map
     //data is coming in the following format:
       // { (id: *** see comment below ***), name: , description: , last updated, coords: { lat: , lng: } }
@@ -77,7 +83,7 @@ module.exports = (knex) => {
         })
   }),
 
-  router.post("map/:id1/pin/:id2/delete", (req, res) => {
+  router.delete("/:pin_id", (req, res) =>{
     //this deletes a map
     checkUser();
     knex("pins")

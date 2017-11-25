@@ -15,10 +15,9 @@ const morgan         = require('morgan');
 const knexLogger     = require('knex-logger');
 
 // Seperated Routes for each Resource
-
-const usersRoutes    = require("./routes/users_routes");
-const mapsRoutes     = require("./routes/maps_routes");
-const pinsRoutes     = require("./routes/pins_routes");
+const usersRoutes = require("./routes/users_routes");
+const mapsRoutes = require("./routes/maps_routes");
+const pinsRoutes = require("./routes/pins_routes");
 
 // Load the logger first so all (static) HTTP requests are logged to STDOUT
 // 'dev' = Concise output colored by response status for development use.
@@ -39,14 +38,9 @@ app.use("/styles", sass({
 app.use(express.static("public"));
 
 // Mount all resource routes
-
-app.get("/map/new", (req, res) => {
-  res.render("map");
-});
-
-// app.use("/user/", usersRoutes(knex));
-// app.use("/map/", mapsRoutes(knex));
-// app.use("/map/:id/pin/", pinsRoutes(knex));
+app.use("/users", usersRoutes(knex));
+app.use("/users/:user_id/maps", mapsRoutes(knex));
+app.use("/users/:user_id/maps/:map_id/pins", pinsRoutes(knex));
 
 // Home page
 
@@ -54,15 +48,6 @@ app.get("/map/new", (req, res) => {
 app.get("/", (req, res) => {
   res.render("index");
 });
-
-app.get("/map", (req, res) => {
-  res.render("map")
-})
-
-app.get("/user", (req, res) => {
-  res.render("user")
-})
-
 
 app.listen(PORT, () => {
   console.log("Example app listening on port " + PORT);
