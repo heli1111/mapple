@@ -6,7 +6,7 @@ exports.up = function(knex, Promise) {
         table.string('pin_name');
         table.string('pin_description');
         table.string('pin_image');
-        table.dateTime('pin_createdAt').notNull();
+        table.dateTime('pin_createdAt');
         table.decimal('pin_latitude', 9, 6).notNull();
         table.decimal('pin_longitude', 9, 6).notNull();
         table.integer('pin_user_id').unsigned().references('user_id').inTable('users');
