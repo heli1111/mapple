@@ -62,7 +62,7 @@
                     </div><!-- /.modal-content -->
                 </div><!-- /.modal-dialog -->
             </div><!-- /.modal -->
-            
+
         </div>
 
     </div>
@@ -114,18 +114,18 @@
 
             // map click listener
             map.addListener('click', (event) => {
-                
+
                 // get lat/lng
                 let lat = event.latLng.lat();
                 let lng = event.latLng.lng();
-                
+
                 // initialize modal form data
                 $('#addPinName').val('');
                 $('#addPinDescription').val('');
                 $('#addPinImage').val('');
                 $('#addPinLatitude').val(lat);
                 $('#addPinLongitude').val(lng);
-                
+
                 // show modal
                 $('#addPinModal').modal('show');
 
@@ -160,6 +160,7 @@
         };
 
     </script>
+    <script type="text/javascript" src="/scripts/event_listeners.js"></script>
     <script async defer
       src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCuw3H9Ze9hLg4XxnnJA6EpzPYs1CAK6qU&callback=initMap">
     </script>
