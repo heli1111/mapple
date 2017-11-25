@@ -37,17 +37,23 @@ app.use("/styles", sass({
 }));
 app.use(express.static("public"));
 
+
 // Mount all resource routes
+// app.use("/users/:id/maps", mapsRoutes(knex));
+// app.use("/maps", mapsRoutes(knex));
 app.use("/users", usersRoutes(knex));
-app.use("/users/:user_id/maps", mapsRoutes(knex));
-app.use("/users/:user_id/maps/:map_id/pins", pinsRoutes(knex));
+
+
+// app.use("/users", usersRoutes(knex));
+// app.use("/users/:user_id/maps", mapsRoutes(knex));
+// app.use("/users/:user_id/maps/:map_id/pins", pinsRoutes(knex));
 
 // Home page
 
-//redirects to /maps? -- Testing (for Jessica)
-app.get("/", (req, res) => {
-  res.render("index");
-});
+// //redirects to /maps? -- Testing (for Jessica)
+// app.get("/", (req, res) => {
+//   res.render("index");
+// });
 
 app.listen(PORT, () => {
   console.log("Example app listening on port " + PORT);

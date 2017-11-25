@@ -112,37 +112,59 @@ function initMap() {
 
   var path = location.pathname;
 
-  if (path.match('/map\/.+/')) {
+  if (path.match('/maps\/.+/')) {
     $(function () {
       $.ajax({
         method: "GET",
-        url: "/map/:id"
+        url: "/maps/:id"
       }).done( function (mapData) {
         compileSingleMap(mapData);
       })
     })
   }
 
-  else if (path.match('/map/')) {
+  // else if (path.match('/maps/')) {
+  //   $(function () {
+  //     $.ajax({
+  //       method: "GET",
+  //       url: "/maps/"
+  //     }).done( function (maps) {
+  //       compileFavoredMaps(maps);
+  //       compileRecentMaps(maps);
+  //     })
+  //   })
+  // }
+
+  else if (path.match('/maps/')) {
     $(function () {
       $.ajax({
         method: "GET",
-        url: "/map/"
+        url: "/maps/"
       }).done( function (maps) {
-        compileFavoredMaps(maps);
-        compileRecentMaps(maps);
+        console.log(maps);
       })
     })
   }
 
-  else if (path.match('/user/')) {
+  // else if (path.match('/users/')) {
+  //   $(function () {
+  //     $.ajax({
+  //       method: "GET",
+  //       url: "/users/:id"
+  //     }).done( function (maps) {
+  //       compileFavoredMaps(maps.usersFavorites);
+  //       compileRecentMaps(maps.usersContributions);
+  //     })
+  //   })
+  // }
+
+  else if (path.match('/users/')) {
     $(function () {
       $.ajax({
         method: "GET",
-        url: "/user/:id"
+        url: "/users/:id"
       }).done( function (maps) {
-        compileFavoredMaps(maps.usersFavorites);
-        compileRecentMaps(maps.usersContributions);
+        console.log(maps);
       })
     })
   }

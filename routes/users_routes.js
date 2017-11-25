@@ -1,15 +1,11 @@
 "use strict";
 
 const express   = require('express');
-const checkUser = require('./checkuser');
 const router    = express.Router();
-
-//pre-filter function to check users
 
 module.exports = (knex) => {
 
-  router.get("/:user_id", (req, res) => {
-    // renders index.ejs template with single_user variables
+  router.get("/:id", (req, res) => {
     let getUsersFavorites = (id) => {
       let mapData =
         knex
@@ -132,7 +128,7 @@ module.exports = (knex) => {
   //     .del()
   // })
 
+})
   return router;
 
 }
-)}
