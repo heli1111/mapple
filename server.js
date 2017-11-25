@@ -41,12 +41,15 @@ app.use(express.static("public"));
 app.use('/users', usersRoutes(knex));
 
 app.get('/', (req, res) => {
-  res.render('index');
+  var templateVars = {
+    user: req.session.user_id
+  }
+  res.render('index', templateVars);
 })
 
-app.post('/login', function (req, res) {
+app.post('/login', (req, res) => {
 
-  function comparePassword (passwordEntered, passwordStored) {
+  let comparePassword = (passwordEntered, passwordStored) => {
     return (passwordEntered === passwordStored);
   }
 
@@ -54,17 +57,21 @@ app.post('/login', function (req, res) {
     .select('user_password','user_username')
     .from('users')
     .where('user_username', req.body.username)
-    .then( function(result) {
+    .then( (result) => {
       if (comparePassword(req.body.password, result[0].user_password)) {
         req.session.user_id = result[0].user_username;
         res.redirect('/');
       }
     })
-    .catch( function(err) {
+    .catch( (err) => {
       res.status(403).send('Incorrect credentials')
     })
 })
 
+app.post('/logout', (req, res) => {
+  req.session = null;
+  res.redirect('/');
+})
 
 app.listen(PORT, () => {
   console.log("Example app listening on port " + PORT);

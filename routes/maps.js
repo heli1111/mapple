@@ -25,6 +25,7 @@ module.exports = (knex) => {
         map.then((result) => {
             console.log(result);
             let templateVars = {
+                user: req.session.user_id,
                 user_id: req.params.user_id,
                 map_id: req.params.map_id,
                 map: result
