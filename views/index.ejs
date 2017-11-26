@@ -103,7 +103,11 @@
               </p>
           </div>
       </div>
+
+      <!-- testing button for new map -->
+      <button type="button" style="width:90px;margin-right:10px;" class="btn btn-default" onclick="window.location.href='/users/:id/maps/new'">New Map</button>
     </div>
+   
     <% include partials/_footer %>
     <script
       src="https://code.jquery.com/jquery-1.12.4.min.js"
@@ -113,6 +117,8 @@
     <script type="text/javascript" src="/scripts/app.js"></script>
     <script type="text/javascript" src="/scripts/maps.js"></script>
     <script type="text/javascript" src="/scripts/event_listeners.js"></script>
+   
+
 
     <script async defer
       src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCuw3H9Ze9hLg4XxnnJA6EpzPYs1CAK6qU&callback=initMap">
