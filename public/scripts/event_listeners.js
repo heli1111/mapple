@@ -1,4 +1,4 @@
-$(document).ready( function (){
+$(document).ready(() => {
 
   //event listener for login
   $('#login').click( function() {
@@ -14,7 +14,8 @@ $(document).ready( function (){
     }).done( function() {
       window.location.href = '/';
     })
-  })
+
+})
 
  $('#logout').click( function () {
    event.preventDefault();
