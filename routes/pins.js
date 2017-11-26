@@ -53,6 +53,7 @@ module.exports = (knex) => {
       res.status(403).send("Please log-in!");
     });
 
+    // update single pin 
     router.post("/:pin_id", (req, res) => {
       if(req.session.user_id) {
         knex("pins")

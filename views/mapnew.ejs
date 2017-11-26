@@ -76,7 +76,6 @@
                 // make map image URL
                 let map_image = mapImageURL(lat,lng,zoom,key);
 
-
                 // prepare map data
                 let data = {
                     name: $('#addMapName').val(),
@@ -93,7 +92,8 @@
                     data: JSON.stringify(data),
                     contentType: 'application/json'
                 }).done((resp) => {
-                    console.log(resp);
+                    alert("map added!")
+                    window.location.href = "/maps";
                 }). fail((resp) => {
                     console.log(resp);
                     alert("FAILED TO ADD MAP");
