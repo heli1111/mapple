@@ -53,11 +53,19 @@ module.exports = (knex) => {
     // update single pin
     router.put('/:pin_id', (req, res) => {
         // TODO
+        res.send('OK');
     })
 
     // delete single pin
     router.delete('/:pin_id', (req, res) => {
-        knex('pins').where('pin_id', req.params.pin_id).del();
+        console.log('delete request received');
+        knex('pins').where('pin_id', req.params.pin_id).del().then((result) => {
+            console.log(result);
+            res.send('OK');
+        }).catch((err) => {
+            console.log(err);
+            res.status(500).send(err);
+        });
     });
 
     return router;
