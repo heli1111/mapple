@@ -21,7 +21,9 @@ module.exports = (knex) => {
     // renders user profile
     router.get('/:user_id', (req, res) => {
         // TODO: check for authorization
-        let templateVars = {};
+        let templateVars = {
+          user: req.session.user_id
+        };
         res.render('index', templateVars);
     });
 
