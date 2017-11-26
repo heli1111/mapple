@@ -1,4 +1,4 @@
-$(document).ready( function (){
+$(document).ready(() => {
 
   //event listener for login
   $('#login').click( function() {
@@ -15,7 +15,8 @@ $(document).ready( function (){
     }).done( function() {
       window.location.reload();
     })
-  })
+
+})
 
   //event listener for logout
   $('#logout').click( function () {

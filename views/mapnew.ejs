@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <%- include partials/_head %>
+  <style>
+    #map {
+      height: 400px;
+      width: 100%;
+    }
+  </style>
+    <body>
+        <% include partials/_navbar %>
+        <div class="container">
+            <!-- title -->
+            <div class="row">
+                <div class="col-md-12">
+                    <h1>create new map.</h1>
+                </div>
+            </div>
+            <!-- populate blank google map -->
+            <div class="row">
+                <div class="col-md-12">
+                    <div id="map"></div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- new map information form -->
+        <div class="row" style="padding:5em">
+            <div class="form-group">
+                <label for="addMapName" class="control-label">Name:</label>
+                <input type="text" class="form-control" id="addMapName">
+            </div>
+            <div class="form-group">
+                <label for="addMapDescription" class="control-label">Description:</label>
+                <input type="text" class="form-control" id="addMapDescription">
+            </div>
+            <div class="form-group">
+                <label for="addMapLatitude" class="control-label">Latitude: </label>
+                <input type="text" class="form-control" id="addMapLatitude">
+            </div>
+            <div class="form-group">
+                <label for="addMapLongitude" class="control-label">Longitude: </label>
+                <input type="text" class="form-control" id="addMapLongitude">
+            </div>
+            <div class="modal-footer">
+                <button id="addMapSave" type="button" class="btn btn-primary">Create Map</button>
+            </div>
+            </div>
+        </div>
+        <% include partials/_footer %>
+    <script
+    src="https://code.jquery.com/jquery-1.12.4.min.js"
+    integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ="
+    crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+  
+    <!-- google map api -->
+    <script>
+        initMap = () => {
+            // initializing blank map  
+            let map = new google.maps.Map(document.getElementById('map'), {
+                center:{lat:43.6444509,lng:-79.3993174},
+                zoom:8
+            });
+
+            // post map data when click create map button
+            $('#addMapSave').click(() => {
+                console.log('map save clicked');
+                // prepare map image data 
+                let zoom = 8;
+                let key = 'AIzaSyBzWTbG5ffRtWJvqs5rU7zaHVTlT5u1qcs';
+                let lat = $('#addMapLatitude').val();
+                let lng = $('#addMapLongitude').val();
+
+                // make map image URL
+                let map_image = mapImageURL(lat,lng,zoom,key);
+
+
+                // prepare map data
+                let data = {
+                    name: $('#addMapName').val(),
+                    description: $('#addMapDescription').val(),
+                    latitude: lat,
+                    longitude: lng,
+                    image: map_image
+                }
+                console.log(data);
+                // send create map put request
+                $.ajax({
+                    url: 'new',
+                    type: 'POST',
+                    data: JSON.stringify(data),
+                    contentType: 'application/json'
+                }).done((resp) => {
+                    console.log(resp);
+                }). fail((resp) => {
+                    console.log(resp);
+                    alert("FAILED TO ADD MAP");
+                });
+            });
+
+            // add latlng to map on click listener
+            map.addListener('click', (event) => {
+                // get latlng
+                let lat = event.latLng.lat();
+                let lng = event.latLng.lng();
+
+                // // inject into field 
+                $('#addMapLatitude').val(lat);
+                $('#addMapLongitude').val(lng);
+            });
+            function mapImageURL (lat, lng, zoom, key) {
+                return mapImage =`https://maps.googleapis.com/maps/api/staticmap?center=${lat},${lng}&zoom=${zoom}&size=640x640&key=${key}`;
+            };
+        }
+    </script>
+    <script async defer
+      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCuw3H9Ze9hLg4XxnnJA6EpzPYs1CAK6qU&callback=initMap">
+    </script>
+  </body>
+</html>

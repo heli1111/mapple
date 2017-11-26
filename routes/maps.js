@@ -36,6 +36,32 @@ module.exports = (knex) => {
       }
     });
 
+    // render create new map page
+    router.get('/new', (req,res) =>{
+        // check user
+        res.render('mapnew');
+    });
+
+    // create new map
+    router.post('/new', (req, res) => {
+        let map = {
+            map_name: req.body.name,
+            map_description: req.body.description,
+            map_createdAt: new Date(),
+            map_last_updated: new Date(),
+            map_latitude: req.body.latitude,
+            map_longitude: req.body.longitude,
+            map_image: req.body.image,
+            map_user_id: req.params.user_id
+        };
+        console.log(map);
+        knex.insert(map).into('maps').then((result) => {
+            res.send('OK');
+        }).catch((err) => {
+            res.status(500).send(err);
+        });
+    });
+
     // render single map page
     router.get('/:map_id', (req, res) => {
 
@@ -110,7 +136,6 @@ module.exports = (knex) => {
           })
       }
     });
-
     // update map
     router.post('/:map_id/update', (req, res) => {
       if (req.session.user_id) {
