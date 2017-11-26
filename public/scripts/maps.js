@@ -11,14 +11,13 @@ function initMap(){
     ];
 
     for(let mapDiv of mapList) {
-        console.log(document.getElementById(mapDiv));
 
     //New map
-    var map = new 
+    var map = new
     google.maps.Map(document.getElementById(mapDiv), options);
-    
+
     //add eventListener for map clicks
-    google.maps.event.addListener(map, 'click', 
+    google.maps.event.addListener(map, 'click',
     function(event){
       addMarker({coords:event.latLng});
     });

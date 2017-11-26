@@ -5,6 +5,7 @@ module.exports = [
         map_description: 'uo minus id, quod maxime placeat, facere possimu',
         map_createdAt: new Date(),
         map_last_updated: new Date(),
+        map_image: 'https://www.fillmurray.com/600/400',
         map_latitude: 43.761017,
         map_longitude: -79.460270,
         map_user_id: 1
@@ -14,6 +15,7 @@ module.exports = [
         map_description: 'uo minus id, quod maxime placeat, facere possimu',
         map_createdAt: new Date(),
         map_last_updated: new Date(),
+        map_image: 'https://www.fillmurray.com/600/400',
         map_latitude: 43.878479,
         map_longitude: -79.323700,
         map_user_id: 2
@@ -23,6 +25,7 @@ module.exports = [
         map_description: 'uo minus id, quod maxime placeat, facere possimu',
         map_createdAt: new Date(),
         map_last_updated: new Date(),
+        map_image: 'https://www.fillmurray.com/600/400',
         map_latitude: 43.878479,
         map_longitude: -79.323700,
         map_user_id: 3
@@ -32,6 +35,7 @@ module.exports = [
         map_description: 'uo minus id, quod maxime placeat, facere possimu',
         map_createdAt: new Date(),
         map_last_updated: new Date(),
+        map_image: 'https://www.fillmurray.com/600/400',
         map_latitude: 43.878479,
         map_longitude: -79.323700,
         map_user_id: 2
@@ -41,6 +45,7 @@ module.exports = [
         map_description: 'uo minus id, quod maxime placeat, facere possimu',
         map_createdAt: new Date(),
         map_last_updated: new Date(),
+        map_image: 'https://www.fillmurray.com/600/400',
         map_latitude: 43.878479,
         map_longitude: -79.323700,
         map_user_id: 4

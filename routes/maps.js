@@ -10,15 +10,62 @@ module.exports = (knex) => {
 
     // get list of maps
     router.get('/', (req, res) => {
+
+      let templateVars = {
+        user: req.session.user_id
+      }
+      res.render('index', templateVars)
+    })
+
+    router.get('/load', (req, res) => {
         knex
-          .select('*')
-          .from('maps')
-          .then((result) => {
+          .select("maps.*", "fav_count_table.fav_count")
+          .from("maps")
+          .leftOuterJoin(
+            function () {
+              this
+                .select("favorites.fav_map_id")
+                .count("favorites.fav_user_id as fav_count")
+                .from("favorites")
+                .groupBy("favorites.fav_map_id")
+                .as("fav_count_table")
+            },
+            "fav_count_table.fav_map_id", "maps.map_id")
+          .then( (result) => {
             res.json(result);
           })
-          .catch((err) => {
-            res.status(500).send(err);
-          });
+          .catch( (err) => {
+            res.status(400).send('Error happened, maps cannot be loaded');
+          })
+
+
+          //   let templateVars = {
+
+          //     "map_id": 1,
+          //     "map_name": "toronto",
+          //     "map_description": "uo minus id, quod maxime placeat, facere possimu",
+          //     "map_createdAt": "2017-11-26T14:02:07.098Z",
+          //     "map_last_updated": "2017-11-26T14:02:07.098Z",
+          //     "map_image": "https://www.fillmurray.com/600/400",
+          //     "map_latitude": "43.761017",
+          //     "map_longitude": "-79.460270",
+          //     "map_user_id": 1,
+          //     "fav_count": "3"
+
+          // }
+        // knex
+        //   .select('*')
+        //   .from('maps')
+        //   .then((result) => {
+        //     let templateVars = {
+
+        //     }
+        //     res.render('index');
+        //     // res.json(result);
+        //   })
+        //   .catch((err) => {
+        //     res.status(500).send(err);
+        //   });
     });
 
     // render create new map page
@@ -28,7 +75,7 @@ module.exports = (knex) => {
           user: req.session.user_id
         }
         // console.log('landed at mapnew')
-        res.render('soma_newmap', templateVars);
+        res.render('mapnew', templateVars);
       }
 
       else {
@@ -74,7 +121,7 @@ module.exports = (knex) => {
               user: req.session.user_id,
               map: result[0]
             }
-
+            console.log(templateVars)
             res.render('map', templateVars);
 
         }).catch((err) => {
