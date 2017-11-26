@@ -32,7 +32,7 @@
                 <input type="text" class="form-control" id="addMapName">
             </div>
             <div class="form-group">
-                <label for="addMapDescription" class="control-label">Name:</label>
+                <label for="addMapDescription" class="control-label">Description:</label>
                 <input type="text" class="form-control" id="addMapDescription">
             </div>
             <div class="form-group">
@@ -59,25 +59,49 @@
     <script>
         initMap = () => {
             // initializing blank map  
-            let map = new google.maps.Map(document.getElementById('map'),{
+            let map = new google.maps.Map(document.getElementById('map'), {
                 center:{lat:43.6444509,lng:-79.3993174},
                 zoom:8
             });
+
+            // post map data when click create map button
             $('#addMapSave').click(() => {
+                console.log('map save clicked');
+                // prepare map image data 
+                let zoom = 8;
+                let key = 'AIzaSyBzWTbG5ffRtWJvqs5rU7zaHVTlT5u1qcs';
+                let lat = $('#addMapLatitude').val();
+                let lng = $('#addMapLongitude').val();
 
-                // prepare data object
+                // make map image URL
+                let map_image = mapImageURL(lat,lng,zoom,key);
+
+
+                // prepare map data
                 let data = {
-                    map_name: $('#addMapName'.val();
-                    map_description: $('#addMapDescription').val();
-                    map_latitude: $('#addMapLatitude').val();
-                    map_longitude: $('#addMapLongitude').val();
+                    name: $('#addMapName').val(),
+                    description: $('#addMapDescription').val(),
+                    latitude: lat,
+                    longitude: lng,
+                    image: map_image
                 }
-
+                console.log(data);
+                // send create map put request
+                $.ajax({
+                    url: 'new',
+                    type: 'POST',
+                    data: JSON.stringify(data),
+                    contentType: 'application/json'
+                }).done((resp) => {
+                    console.log(resp);
+                }). fail((resp) => {
+                    console.log(resp);
+                    alert("FAILED TO ADD MAP");
+                });
             });
 
             // add latlng to map on click listener
             map.addListener('click', (event) => {
-                console.log('click!');
                 // get latlng
                 let lat = event.latLng.lat();
                 let lng = event.latLng.lng();
@@ -86,14 +110,9 @@
                 $('#addMapLatitude').val(lat);
                 $('#addMapLongitude').val(lng);
             });
-        
-        
-        
-        
-        
-        
-        
-        
+            function mapImageURL (lat, lng, zoom, key) {
+                return mapImage =`https://maps.googleapis.com/maps/api/staticmap?center=${lat},${lng}&zoom=${zoom}&size=640x640&key=${key}`;
+            };
         }
     </script>
     <script async defer
