@@ -1,127 +1,38 @@
 <!DOCTYPE html>
 <html lang="en">
   <%- include partials/_head %>
-  <style>
-      #map {
-       height: 400px;
-       width: 100%;
-      }
-      #map1 {
-       height: 200px;
-       width: 100%;
-       margin: 10px;
-      }
-      #map2 {
-       height: 200px;
-       width: 100%;
-       margin: 10px;
-      }
-      #map3 {
-       height: 200px;
-       width: 100%;
-       margin: 10px;
-      }
-      #map4 {
-       height: 200px;
-       width: 100%;
-       margin: 10px;
-      }
-      #map5 {
-       height: 200px;
-       width: 100%;
-       margin: 10px;
-      }
-      #map6 {
-       height: 200px;
-       width: 100%;
-       margin: 10px;
-      }
-      #map7 {
-       height: 200px;
-       width: 100%;
-      }
-      #map8 {
-       height: 200px;
-       width: 100%;
-       margin: 10px;
-      }
-      #map9 {
-       height: 200px;
-       width: 100%;
-       margin: 10px;
-      }
-  </style>
   <body>
     <% include partials/_navbar %>
-    <div class="container">
-      <!-- google map -->
-      <div class="row">
-          <div class="col-md-12">
-              <div id="map"></div>
-              <p>Hello this is content</p>
-          </div>
-      </div>
-      <!-- small pictures -->
-      <div class="row">
-          <div class="col-md-4">
-              <div id="map1"></div>
-          </div>
-          <div class="col-md-4">
-              <div id="map2"></div>
-          </div>
-          <div class="col-md-4">
-              <div id="map3"></div>
-          </div>
-      </div>
-      <div class="row">
-          <div class="col-md-4">
-              <div id="map4"></div>
-          </div>
-          <div class="col-md-4">
-              <div id="map5"></div>
-          </div>
-          <div class="col-md-4">
-              <div id="map6"></div>
-          </div>
-      </div>
-      <div class="row">
-          <div class="col-md-4">
-              <div id="map7"></div>
-          </div>
-          <div class="col-md-4">
-              <div id="map8"></div>
-          </div>
-          <div class="col-md-4">
-              <div id="map9"></div>
-          </div>
-      </div>
-      <!-- marketing placeholder -->
-      <div class="row">
-          <div class="col-md-12">
-              <p>
-                  Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
-              </p>
-          </div>
-      </div>
 
-      <!-- testing button for new map -->
-      <button type="button" style="width:90px;margin-right:10px;" class="btn btn-default" onclick="window.location.href='/users/:id/maps/new'">New Map</button>
+  <main class="main-container">
+    <div>
+      <h2>Favorite Maps</h2>
+      <ul id="favorite-maps">
+
+      </ul>
     </div>
-   
+
+    <div>
+      <h3>All Maps</h3>
+      <ul id="recent-maps">
+
+      </ul>
+
+    </div>
+
+
+  </main>
+
+
+
     <% include partials/_footer %>
-    <script
-      src="https://code.jquery.com/jquery-1.12.4.min.js"
-      integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ="
-      crossorigin="anonymous"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
-    <script type="text/javascript" src="/scripts/app.js"></script>
-    <script type="text/javascript" src="/scripts/maps.js"></script>
+
+
+    <!-- <script type="text/javascript" src="/scripts/app.js"></script> -->
+    <script type="text/javascript" src="/scripts/index-listeners.js"></script>
+    <!-- <script type="text/javascript" src="/scripts/maps.js"></script> -->
     <script type="text/javascript" src="/scripts/event_listeners.js"></script>
-   
 
 
-    <script async defer
-      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCuw3H9Ze9hLg4XxnnJA6EpzPYs1CAK6qU&callback=initMap">
-    </script>
   </body>
 </html>

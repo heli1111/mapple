@@ -52,7 +52,8 @@ app.get('/', (req, res) => {
   var templateVars = {
     user: req.session.user_id
   }
-  res.render('index', templateVars);
+  res.redirect('/maps/');
+  // res.render('index', templateVars);
 })
 
 app.post('/login', (req, res) => {

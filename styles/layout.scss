@@ -6,6 +6,56 @@ body {
   }
 }
 
+.main-container {
+  margin: 3em;
+}
+
 .logo-img {
-  display: inline-block;vertical-align: middle;margin: auto;max-width: 20px;
+  display: inline-block;
+  vertical-align: middle;
+  margin: auto;
+  max-width: 20px;
+}
+
+.map-list-item {
+  margin: 10px;
+  height: 240px;
+}
+
+.map-list-item:hover {
+  border: 1px solid grey;
+  background-color: #d3d3d3;
+}
+
+.map-image {
+  position: relative;
+  left: 0;
+  height: 200px;
+  float: left;
+  margin: 20px;
+  border: 1px solid #d3d3d3;
+}
+
+.map-info {
+  position: relative;
+  float: left;
+  margin: 20px;
+  height: 200px;
+  list-style: none;
+  color: grey;
+  padding: 0;
+  word-wrap: break-word;
+}
+
+#recent-maps, #favorite-maps {
+  list-style: none;
+}
+
+.map-name {
+  font-size: 30px;
+}
+
+.map-description {
+  font-style: italic;
+  font-size: 15px;
 }

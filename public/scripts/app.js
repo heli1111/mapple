@@ -137,7 +137,6 @@ function initMap() {
   // }
 
   else if (path.match('/maps/$')) {
-    console.log('we got here /maps/$')
     $(function () {
       $.ajax({
         method: "GET",

@@ -6,6 +6,7 @@ const router = express.Router({mergeParams: true});
 module.exports = (knex) => {
 
     // get list of pins
+
     router.get('/', (req, res) => {
         // TODO: should get pins for current map only
         let pins = knex('pins').select().where('pin_map_id', req.params.map_id);
@@ -15,6 +16,7 @@ module.exports = (knex) => {
             res.status(500).send(err);
         });
     });
+
 
     // get single pin
     router.get('/:pin_id', (req, res) => {
@@ -53,8 +55,10 @@ module.exports = (knex) => {
       res.status(403).send("Please log-in!");
     });
 
+
     // update single pin 
     router.post("/:pin_id", (req, res) => {
+
       if(req.session.user_id) {
         knex("pins")
           .where("pin_id", req.params.pin_id)
@@ -69,12 +73,14 @@ module.exports = (knex) => {
             res.status(500).send(err);
           });
           return;
+
       }
       
       res.status(403).send('login!');
     }),
 
     // delete single pin
+
     router.delete("/:pin_id", (req, res) => {
       console.log('delete pin!!!!');
       let user_id = req.session.user_id;
@@ -86,6 +92,7 @@ module.exports = (knex) => {
           res.status(500).send(err);
         });
         return;
+
       }
       res.status(403).send('unauthorized');
     });

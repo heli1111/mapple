@@ -10,15 +10,34 @@ module.exports = (knex) => {
 
     // get list of maps
     router.get('/', (req, res) => {
+
+      let templateVars = {
+        user: req.session.user_id
+      }
+      res.render('index', templateVars)
+    })
+
+    router.get('/load', (req, res) => {
         knex
-          .select('*')
-          .from('maps')
-          .then((result) => {
+          .select("maps.*", "fav_count_table.fav_count")
+          .from("maps")
+          .leftOuterJoin(
+            function () {
+              this
+                .select("favorites.fav_map_id")
+                .count("favorites.fav_user_id as fav_count")
+                .from("favorites")
+                .groupBy("favorites.fav_map_id")
+                .as("fav_count_table")
+            },
+            "fav_count_table.fav_map_id", "maps.map_id")
+          .then( (result) => {
             res.json(result);
           })
-          .catch((err) => {
-            res.status(500).send(err);
-          });
+          .catch( (err) => {
+            res.status(400).send('Error happened, maps cannot be loaded');
+          })
+
     });
 
     //render create new map page
@@ -27,9 +46,11 @@ module.exports = (knex) => {
         let templateVars = {
           user: req.session.user_id
         }
+
         console.log('landed at mapnew')
         res.render('mapnew', templateVars);
         return
+
       }
       res.redirect('/login');
     });
@@ -57,6 +78,7 @@ module.exports = (knex) => {
     // render single map page
     router.get('/:map_id', (req, res) => {
         knex
+          .select('*')
           .from('maps')
           .where('map_id', req.params.map_id)
           .then( (result) => {
@@ -64,7 +86,23 @@ module.exports = (knex) => {
               user: req.session.user_id,
               map: result[0]
             }
+
+
             res.render('map', templateVars);
+        }).catch((err) => {
+            res.status(500).send(err);
+        });
+    });
+
+    // render single map page
+    router.get('/:map_id/pins', (req, res) => {
+
+        knex
+          .select('*')
+          .from('pins')
+          .where('pin_map_id', req.params.map_id)
+          .then( (result) => {
+            res.json(result)
         }).catch((err) => {
             res.status(500).send(err);
         });
@@ -78,25 +116,32 @@ module.exports = (knex) => {
 
       else {
 
-        knex
-          .insert([{
-            map_name:         req.body.name,
-            map_description:  req.body.description,
-            map_image:        req.body.image,
-            map_createdAt:    req.body.createdAt,
-            map_last_updated: req.body.createdAt,
-            map_latitude:     req.body.coords.lat,
-            map_longitude:    req.body.coords.lng,
-            map_user_id:      req.body.user
-            }])
-          .returning('map_id')
-          .into("maps")
-          .then( (id) => {
-            res.redirect(`/maps/${id}`)
-            })
-          .catch( (err) => {
-            res.status(501).send('Error happened, map cannot be created');
-          })
+      console.log('yesss')
+      console.log(req.body)
+      // dataToInsert = {
+      //       map_name:         req.body.name,
+      //       map_description:  req.body.description,
+      //       map_image:        req.body.image,
+      //       map_createdAt:    req.body.createdAt,
+      //       map_last_updated: req.body.createdAt,
+      //       map_latitude:     req.body.coords.lat,
+      //       map_longitude:    req.body.coords.lng,
+      //       map_user_id:      req.body.user
+      // }
+
+        // knex
+        //   .insert([{
+
+        //     }])
+        //   .returning('map_id')
+        //   .into("maps")
+        //   .then( (id) => {
+        //     res.redirect(`/maps/${id}`)
+        //     })
+        //   .catch( (err) => {
+        //     res.status(501).send('Error happened, map cannot be created');
+        //   })
+        res.redirect('/')
       }
     });
 
@@ -127,6 +172,7 @@ module.exports = (knex) => {
           .where("map_id", req.params.map_id)
           // .returning("map_id") //if something need to be returned
           .update({
+
             map_name:         req.body.map_name,
             map_description:  req.body.map_description,
           }) .then( (result) => {
@@ -135,6 +181,7 @@ module.exports = (knex) => {
             res.status(500).send(err);
           });
           return;
+
       }
         res.status(403).send('unauthorized');
     });

@@ -10,6 +10,8 @@
 
 <% if (user) { %>
 
+        <span>Hello: </span><span id="currentUser"><%= user %> </span>
+
         <form class="navbar-form navbar-right">
             <div class="form-group">
                 <input id="logout" type="submit" value="Logout" class="btn btn-default btn-sm" style="width:90px;margin-right:10px;">
@@ -31,12 +33,12 @@
     </div>
 </nav>
 
-<% if (user) { %>
+<nav class="navbar">
+  <% if (user) { %>
+    <div class="breadcrumb" style="margin-top:-20px;min-height:55px;">
 
-<div class="breadcrumb" style="margin-top:-20px;min-height:55px;">
-
-    <button id="new-map" type="button" style="width:90px;margin-right:10px;" class="btn btn-default">New Map</button>
-    <button id="my-maps" type="button" style="width:90px" class="btn btn-default">My Maps</button>
-
-</div>
-<% } %>
+        <button id="new-map" type="button" style="width:90px;margin-right:10px;" class="btn btn-default">New Map</button>
+        <button id="my-maps" type="button" style="width:90px" class="btn btn-default">My Maps</button>
+    </div>
+  <% } %>
+</nav>
