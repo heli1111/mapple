@@ -40,25 +40,19 @@ module.exports = (knex) => {
 
     });
 
-    // render create new map page
+    //render create new map page
     router.get('/new', (req,res) =>{
       if (req.session.user_id) {
         let templateVars = {
           user: req.session.user_id
         }
-        // console.log('landed at mapnew')
+
+        console.log('landed at mapnew')
         res.render('mapnew', templateVars);
-      }
+        return
 
-      else {
-        res.redirect('/');
       }
-    });
-
-    // render create new map page
-    router.get('/new', (req,res) =>{
-        // check user
-        res.render('mapnew');
+      res.redirect('/login');
     });
 
     // create new map
@@ -83,20 +77,18 @@ module.exports = (knex) => {
 
     // render single map page
     router.get('/:map_id', (req, res) => {
-
         knex
           .select('*')
           .from('maps')
           .where('map_id', req.params.map_id)
           .then( (result) => {
-
             let templateVars = {
               user: req.session.user_id,
               map: result[0]
             }
-            console.log(templateVars)
-            res.render('map', templateVars);
 
+
+            res.render('map', templateVars);
         }).catch((err) => {
             res.status(500).send(err);
         });
@@ -170,42 +162,55 @@ module.exports = (knex) => {
           })
       }
     });
+
     // update map
-    router.post('/:map_id/update', (req, res) => {
-      if (req.session.user_id) {
+    router.post('/:map_id', (req, res) => {
+      let user_id = req.session.user_id;
+      console.log('user_id: ' + JSON.stringify(user_id));
+      if (user_id) {
         knex("maps")
-          .where("maps.map_id", req.params.id)
+          .where("map_id", req.params.map_id)
           // .returning("map_id") //if something need to be returned
           .update({
-            map_name:         req.body.name,
-            map_description:  req.body.description,
-            map_image:        req.body.image,
-            map_last_updated: req.body.last_updated,
-            map_latitude:     req.body.coords.lat,
-            map_longitude:    req.body.coords.lng,
-            })
-          .then( (result) => {
-            res.status(202);
-            })
-          .catch( (err) => {
-            res.status(501);
-            })
+
+            map_name:         req.body.map_name,
+            map_description:  req.body.map_description,
+          }) .then( (result) => {
+            res.status(200).send('map updated!');
+          }) .catch( (err) => {
+            res.status(500).send(err);
+          });
+          return;
+
       }
+        res.status(403).send('unauthorized');
     });
 
     // delete map
-    router.post('/:map_id/delete', (req, res) => {
-      if (req.session.user_id) {
-        knex("maps")
-          .where("maps.map_id", req.params.id)
+    router.delete('/:map_id', (req, res) => {
+      let user_id = req.session.user_id;
+      console.log('user_id: ' + JSON.stringify(user_id));
+      console.log('map_id: ' + req.params.map_id);
+
+      if (user_id) {
+        knex('pins')
+          .where('pin_map_id', req.params.map_id)
           .del()
-          .then( (result) => {
-            res.status(202);
-            })
-          .catch( (err) => {
-            res.status(501);
-            })
+          .then(() => {
+            knex('maps')
+              .where('map_id', req.params.map_id)
+              .del()
+              .then((count) => {
+                res.status(200).send('OK');
+              }).catch((err) => {
+                res.status(500).send(err);    
+              })
+          }).catch((err) => {
+            res.status(500).send(err);
+          });
+        return;
       }
+      res.status(403).send('unauthorized');
     });
 
     router.use('/:map_id/pins', pinRoutes(knex));

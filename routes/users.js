@@ -6,8 +6,6 @@ const router = express.Router({mergeParams: true});
 
 module.exports = (knex) => {
 
-    const mapRoutes = require('./maps');
-
     // get list of users
     router.get('/', (req, res) => {
       res.redirect('/maps/');
@@ -114,8 +112,6 @@ module.exports = (knex) => {
     //     // TODO: check for db errors
     //     knex('users').where('user_id', req.params.user_id).del();
     // });
-
-    router.use('/:user_id/maps', mapRoutes(knex));
 
     return router;
 
