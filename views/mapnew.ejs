@@ -24,7 +24,7 @@
                 </div>
             </div>
         </div>
-        
+
         <!-- new map information form -->
         <div class="row" style="padding:5em">
             <div class="form-group">
@@ -54,11 +54,11 @@
     integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ="
     crossorigin="anonymous"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
-  
+
     <!-- google map api -->
     <script>
         initMap = () => {
-            // initializing blank map  
+            // initializing blank map
             let map = new google.maps.Map(document.getElementById('map'), {
                 center:{lat:43.6444509,lng:-79.3993174},
                 zoom:8
@@ -67,7 +67,7 @@
             // post map data when click create map button
             $('#addMapSave').click(() => {
                 console.log('map save clicked');
-                // prepare map image data 
+                // prepare map image data
                 let zoom = 8;
                 let key = 'AIzaSyBzWTbG5ffRtWJvqs5rU7zaHVTlT5u1qcs';
                 let lat = $('#addMapLatitude').val();
@@ -106,7 +106,7 @@
                 let lat = event.latLng.lat();
                 let lng = event.latLng.lng();
 
-                // // inject into field 
+                // // inject into field
                 $('#addMapLatitude').val(lat);
                 $('#addMapLongitude').val(lng);
             });
@@ -115,6 +115,7 @@
             };
         }
     </script>
+    <script type="text/javascript" src="/scripts/event_listeners.js"></script>
     <script async defer
       src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCuw3H9Ze9hLg4XxnnJA6EpzPYs1CAK6qU&callback=initMap">
     </script>
