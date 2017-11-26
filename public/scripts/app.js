@@ -2,7 +2,7 @@
 //these functions compile the maps on the main page that have the most favors
 
 //helper function for sorting maps from the database by the number of favors
-function sortByFavor = (maps) {
+function sortByFavor (maps) {
   return maps.sort( function (a, b) {
     return b.fav_count - a.fav_count;
   })
@@ -26,7 +26,7 @@ function compileFavoredMaps (data) {
 // these functions compile the maps ordered by time of the last update
 
 //helper function for sorting maps from the database by the time of last update
-function sortByLastUpdate = (maps) {
+function sortByLastUpdate (maps) {
   return maps.sort( function (a, b) {
     return b.map_last_updated - a.map_last_updated;
   })
@@ -112,11 +112,12 @@ function initMap() {
 
   var path = location.pathname;
 
-  if (path.match('/maps\/.+/')) {
+  if (path.match('/maps/')) {
+        console.log('we got here /maps/')
     $(function () {
       $.ajax({
         method: "GET",
-        url: "/maps/:id"
+        url: "/maps/:map_id"
       }).done( function (mapData) {
         compileSingleMap(mapData);
       })
@@ -135,7 +136,8 @@ function initMap() {
   //   })
   // }
 
-  else if (path.match('/maps/')) {
+  else if (path.match('/maps/$')) {
+    console.log('we got here /maps/$')
     $(function () {
       $.ajax({
         method: "GET",

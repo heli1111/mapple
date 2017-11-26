@@ -116,9 +116,6 @@
       integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ="
       crossorigin="anonymous"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
-    <script>
-        // initialize google map
-        initMap = () => {
 
             let map = new google.maps.Map(document.getElementById('map'), {
                 center: {lat: <%=map.map_latitude%>, lng: <%=map.map_longitude%>},
@@ -267,9 +264,10 @@
         };
 
     </script>
+
     <script type="text/javascript" src="/scripts/event_listeners.js"></script>
-    <script async defer
+<!--     <script async defer
       src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCuw3H9Ze9hLg4XxnnJA6EpzPYs1CAK6qU&callback=initMap">
-    </script>
+    </script> -->
   </body>
 </html>
