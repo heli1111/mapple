@@ -56,15 +56,9 @@ module.exports = (knex) => {
           .where("pins.pin_id", req.params.pin_id)
           // .returning("map_id") //if something need to be returned
           .update({
-            pin_id:           undefined, //cannot change
             pin_name:         req.body.name,
             pin_description:  req.body.description,
             pin_image:        req.body.image,
-            pin_createdAt:    undefined, //cannot change
-            pin_latitude:     undefined, //cannot change
-            pin_longitude:    undefined, //cannot change
-            pin_map_id:       undefined, //cannot change
-            pin_user_id:      undefined //cannot change
             })
           .then( (result) => {
             res.status(202);

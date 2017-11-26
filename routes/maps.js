@@ -38,34 +38,6 @@ module.exports = (knex) => {
             res.status(400).send('Error happened, maps cannot be loaded');
           })
 
-
-          //   let templateVars = {
-
-          //     "map_id": 1,
-          //     "map_name": "toronto",
-          //     "map_description": "uo minus id, quod maxime placeat, facere possimu",
-          //     "map_createdAt": "2017-11-26T14:02:07.098Z",
-          //     "map_last_updated": "2017-11-26T14:02:07.098Z",
-          //     "map_image": "https://www.fillmurray.com/600/400",
-          //     "map_latitude": "43.761017",
-          //     "map_longitude": "-79.460270",
-          //     "map_user_id": 1,
-          //     "fav_count": "3"
-
-          // }
-        // knex
-        //   .select('*')
-        //   .from('maps')
-        //   .then((result) => {
-        //     let templateVars = {
-
-        //     }
-        //     res.render('index');
-        //     // res.json(result);
-        //   })
-        //   .catch((err) => {
-        //     res.status(500).send(err);
-        //   });
     });
 
     // render create new map page
@@ -205,15 +177,12 @@ module.exports = (knex) => {
           .where("maps.map_id", req.params.id)
           // .returning("map_id") //if something need to be returned
           .update({
-            map_id:           undefined, //cannot change
             map_name:         req.body.name,
             map_description:  req.body.description,
             map_image:        req.body.image,
-            map_createdAt:    undefined, //cannot change
             map_last_updated: req.body.last_updated,
             map_latitude:     req.body.coords.lat,
             map_longitude:    req.body.coords.lng,
-            map_user_id:      undefined //cannot change
             })
           .then( (result) => {
             res.status(202);
