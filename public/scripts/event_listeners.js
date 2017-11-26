@@ -1,4 +1,4 @@
-$(document).ready( function (){
+$(document).ready(() => {
 
   //event listener for login
   $('#login').click( function() {
@@ -12,7 +12,8 @@ $(document).ready( function (){
       method: 'POST',
       data: {username, password}
     })
-  })
+  })  
+
 })
 
   //event listener for submitting new map

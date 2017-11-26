@@ -18,6 +18,12 @@ module.exports = (knex) => {
         });
     });
 
+    // render create new map page
+    router.get('/new', (req,res) =>{
+        // check user
+        res.render('mapnew');
+    });
+
     // render single map page
     router.get('/:map_id', (req, res) => {
         // TODO: get map data from database

@@ -41,6 +41,7 @@ app.use(express.static("public"));
 app.use('/users', usersRoutes(knex));
 
 app.get('/', (req, res) => {
+  // TODO: select current logged in user
   res.render('index');
 })
 
