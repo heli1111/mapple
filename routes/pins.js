@@ -5,91 +5,89 @@ const router = express.Router({mergeParams: true});
 
 module.exports = (knex) => {
 
-    // // get list of pins
-    // router.get('/', (req, res) => {
-    //     // TODO: should get pins for current map only
-    //     let pins = knex.select().from('pins');
-    //     pins.then((result) => {
-    //         res.json(result);
-    //     }).catch((err) => {
-    //         res.status(500).send(err);
-    //     });
-    // });
+    // get list of pins
+    router.get('/', (req, res) => {
+        // TODO: should get pins for current map only
+        let pins = knex('pins').select().where('pin_map_id', req.params.map_id);
+        pins.then((result) => {
+            res.json(result);
+        }).catch((err) => {
+            res.status(500).send(err);
+        });
+    });
 
-    // // get single pin
-    // router.get('/:pin_id', (req, res) => {
-    //     let pin = knex('pins').select().where('pin_id', req.params.pin_id);
-    //     pin.then((result) => {
-    //         res.json(result);
-    //     }).catch((err) => {
-    //         res.status(500).send(err);
-    //     });
-    // });
+    // get single pin
+    router.get('/:pin_id', (req, res) => {
+        let pin = knex('pins').select().where('pin_id', req.params.pin_id).first();
+        pin.then((result) => {
+            res.json(result);
+        }).catch((err) => {
+            res.status(500).send(err);
+        });
+    });
 
     // create single pin
     router.post('/new', (req, res) => {
-      if(req.session.user_id) {
-        knex
-          .insert([{
-            pin_name:         req.body.name,
-            pin_description:  req.body.description,
-            pin_image:        req.body.image,
-            pin_createdAt:    req.body.createdAt,
-            pin_latitude:     req.body.coords.lat,
-            pin_longitude:    req.body.coords.lng,
-            pin_map_id:       req.body.map_id,
-            pin_user_id:      req.session.user_id
-            }])
-          .into("pins")
-          .then( (result) => {
-            res.status(201);
-            })
-          .catch( (err) => {
-            res.status(501).send('Error happened, map cannot be created');
-          })
+      let user_id = req.session.user_id;
+      console.log(user_id);
+      let newPin = {
+        pin_name:         req.body.pin_name,
+        pin_description:  req.body.pin_description,
+        pin_image:        req.body.pin_image,
+        pin_createdAt:    new Date(),
+        pin_latitude:     parseFloat(req.body.pin_latitude),
+        pin_longitude:    parseFloat(req.body.pin_longitude),
+        pin_user_id:      req.session.user_id,
+        pin_map_id:       req.params.map_id
+      };
+      console.log(newPin);
+
+      if (req.session.user_id) {
+        knex('pins').insert(newPin).returning('pin_id').then( (result) => {
+            res.status(201).send(result);
+        }).catch( (err) => {
+            res.status(500).send('Error happened, map cannot be created');
+        })
+        return
       }
+      res.status(403).send("Please log-in!");
     });
 
     router.post("/:pin_id", (req, res) => {
       if(req.session.user_id) {
         knex("pins")
-          .where("pins.pin_id", req.params.pin_id)
+          .where("pin_id", req.params.pin_id)
           // .returning("map_id") //if something need to be returned
           .update({
-            pin_id:           undefined, //cannot change
-            pin_name:         req.body.name,
-            pin_description:  req.body.description,
-            pin_image:        req.body.image,
-            pin_createdAt:    undefined, //cannot change
-            pin_latitude:     req.body.coords.lat,
-            pin_longitude:    req.body.coords.lng,
-            pin_map_id:       undefined, //cannot change
-            pin_user_id:      undefined //cannot change
-            })
-          .then( (result) => {
-            res.status(202);
-            })
-          .catch( (err) => {
-            res.status(501);
-            })
+            pin_name:         req.body.pin_name,
+            pin_description:  req.body.pin_description,
+            pin_image:        req.body.pin_image
+          }).then( (result) => {
+            res.status(200).send('OK');
+          }).catch( (err) => {
+            res.status(500).send(err);
+          });
+          return;
       }
+      
+      res.status(403).send('login!');
     }),
 
     // delete single pin
     router.delete("/:pin_id", (req, res) => {
-      if(req.session.user_id) {
-        knex("pins")
-          .where("pins.map_id", req.body.map_id)
-          .andWhere("pins.pin_id", req.params.pin_id)
-          .del()
-          .then( (result) => {
-            res.status(202);
-            })
-          .catch( (err) => {
-            res.status(501);
-            })
+      console.log('delete pin!!!!');
+      let user_id = req.session.user_id;
+      if (user_id) {
+        knex('pins').where('pin_id', req.params.pin_id).del().then((count) => {
+          console.log(count);
+          res.status(202).send('OK');
+        }).catch((err) => {
+          res.status(500).send(err);
+        });
+        return;
       }
-    })
+      res.status(403).send('unauthorized');
+    });
 
     return router;
 }

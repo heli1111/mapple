@@ -21,25 +21,17 @@ module.exports = (knex) => {
           });
     });
 
-    // render create new map page
+    //render create new map page
     router.get('/new', (req,res) =>{
       if (req.session.user_id) {
         let templateVars = {
           user: req.session.user_id
         }
         console.log('landed at mapnew')
-        // res.render('mapnew', templateVars);
+        res.render('mapnew', templateVars);
+        return
       }
-
-      else {
-        res.redirect('/');
-      }
-    });
-
-    // render create new map page
-    router.get('/new', (req,res) =>{
-        // check user
-        res.render('mapnew');
+      res.redirect('/login');
     });
 
     // create new map
@@ -64,19 +56,15 @@ module.exports = (knex) => {
 
     // render single map page
     router.get('/:map_id', (req, res) => {
-
         knex
           .from('maps')
           .where('map_id', req.params.map_id)
           .then( (result) => {
-
             let templateVars = {
               user: req.session.user_id,
               map: result[0]
             }
-
             res.render('map', templateVars);
-
         }).catch((err) => {
             res.status(500).send(err);
         });
