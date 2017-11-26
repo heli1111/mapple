@@ -5,10 +5,10 @@ const router = express.Router({mergeParams: true});
 
 module.exports = (knex) => {
 
-    // // get list of pins
+    // get list of pins
     // router.get('/', (req, res) => {
     //     // TODO: should get pins for current map only
-    //     let pins = knex.select().from('pins');
+    //     let pins = knex.select('*').from('pins');
     //     pins.then((result) => {
     //         res.json(result);
     //     }).catch((err) => {
@@ -50,7 +50,7 @@ module.exports = (knex) => {
       }
     });
 
-    router.post("/:pin_id", (req, res) => {
+    router.post("/:pin_id/update", (req, res) => {
       if(req.session.user_id) {
         knex("pins")
           .where("pins.pin_id", req.params.pin_id)
@@ -61,8 +61,8 @@ module.exports = (knex) => {
             pin_description:  req.body.description,
             pin_image:        req.body.image,
             pin_createdAt:    undefined, //cannot change
-            pin_latitude:     req.body.coords.lat,
-            pin_longitude:    req.body.coords.lng,
+            pin_latitude:     undefined, //cannot change
+            pin_longitude:    undefined, //cannot change
             pin_map_id:       undefined, //cannot change
             pin_user_id:      undefined //cannot change
             })
@@ -76,10 +76,10 @@ module.exports = (knex) => {
     }),
 
     // delete single pin
-    router.delete("/:pin_id", (req, res) => {
+    router.post("/:pin_id/delete", (req, res) => {
       if(req.session.user_id) {
         knex("pins")
-          .where("pins.map_id", req.body.map_id)
+          .where("pins.map_id", req.body.pin_map_id)
           .andWhere("pins.pin_id", req.params.pin_id)
           .del()
           .then( (result) => {

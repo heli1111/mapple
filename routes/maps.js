@@ -113,6 +113,7 @@ module.exports = (knex) => {
     router.get('/:map_id', (req, res) => {
 
         knex
+          .select('*')
           .from('maps')
           .where('map_id', req.params.map_id)
           .then( (result) => {
@@ -124,6 +125,20 @@ module.exports = (knex) => {
             console.log(templateVars)
             res.render('map', templateVars);
 
+        }).catch((err) => {
+            res.status(500).send(err);
+        });
+    });
+
+    // render single map page
+    router.get('/:map_id/pins', (req, res) => {
+
+        knex
+          .select('*')
+          .from('pins')
+          .where('pin_map_id', req.params.map_id)
+          .then( (result) => {
+            res.json(result)
         }).catch((err) => {
             res.status(500).send(err);
         });
