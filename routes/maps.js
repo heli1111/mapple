@@ -27,8 +27,8 @@ module.exports = (knex) => {
         let templateVars = {
           user: req.session.user_id
         }
-        console.log('landed at mapnew')
-        // res.render('mapnew', templateVars);
+        // console.log('landed at mapnew')
+        res.render('soma_newmap', templateVars);
       }
 
       else {
@@ -64,25 +64,32 @@ module.exports = (knex) => {
 
       else {
 
-        knex
-          .insert([{
-            map_name:         req.body.name,
-            map_description:  req.body.description,
-            map_image:        req.body.image,
-            map_createdAt:    req.body.createdAt,
-            map_last_updated: req.body.createdAt,
-            map_latitude:     req.body.coords.lat,
-            map_longitude:    req.body.coords.lng,
-            map_user_id:      req.body.user
-            }])
-          .returning('map_id')
-          .into("maps")
-          .then( (id) => {
-            res.redirect(`/maps/${id}`)
-            })
-          .catch( (err) => {
-            res.status(501).send('Error happened, map cannot be created');
-          })
+      console.log('yesss')
+      console.log(req.body)
+      // dataToInsert = {
+      //       map_name:         req.body.name,
+      //       map_description:  req.body.description,
+      //       map_image:        req.body.image,
+      //       map_createdAt:    req.body.createdAt,
+      //       map_last_updated: req.body.createdAt,
+      //       map_latitude:     req.body.coords.lat,
+      //       map_longitude:    req.body.coords.lng,
+      //       map_user_id:      req.body.user
+      // }
+
+        // knex
+        //   .insert([{
+
+        //     }])
+        //   .returning('map_id')
+        //   .into("maps")
+        //   .then( (id) => {
+        //     res.redirect(`/maps/${id}`)
+        //     })
+        //   .catch( (err) => {
+        //     res.status(501).send('Error happened, map cannot be created');
+        //   })
+        res.redirect('/')
       }
     });
 
