@@ -62,12 +62,12 @@ app.post('/login', (req, res) => {
   }
 
   knex
-    .select('user_password','user_username')
+    .select('user_password','user_id')
     .from('users')
     .where('user_username', req.body.username)
     .then( (result) => {
       if (comparePassword(req.body.password, result[0].user_password)) {
-        req.session.user_id = result[0].user_username;
+        req.session.user_id = result[0].user_id;
         res.redirect('/');
       }
     })

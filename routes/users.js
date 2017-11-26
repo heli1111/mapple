@@ -42,17 +42,17 @@ module.exports = (knex) => {
         res.render("OK");
     });
 
-    // update user
-    router.put('/:user_id', (req, res) => {
-        // TODO
-    });
+    // // update user
+    // router.put('/:user_id', (req, res) => {
+    //     // TODO
+    // });
 
-    // delete user
-    router.delete("/:user_id", (req, res) => {
-        // TODO: check for authorization
-        // TODO: check for db errors
-        knex('users').where('user_id', req.params.user_id).del();
-    });
+    // // delete user
+    // router.delete("/:user_id", (req, res) => {
+    //     // TODO: check for authorization
+    //     // TODO: check for db errors
+    //     knex('users').where('user_id', req.params.user_id).del();
+    // });
 
     router.use('/:user_id/maps', mapRoutes(knex));
 
