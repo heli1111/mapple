@@ -150,13 +150,13 @@
 
     <!-- JQuery and Bootstrap -->
 
-    
+
     <script
       src="https://code.jquery.com/jquery-1.12.4.min.js"
       integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ="
       crossorigin="anonymous"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
-    
+
     <!-- JS to render the google map API -->
     <script>
         initMap = () => {
@@ -308,7 +308,7 @@
 
             // check user authentication
             var currentUser = Number($('#currentUser').text());
-            
+
             // map click listener - show modal to add pin
             map.addListener('dblclick', (event) => {
               if (currentUser) {
@@ -348,10 +348,10 @@
                 label: pinData.pin_name,
                 map: map
             });
-        
+
             // only logged in users can add pin
             if (currentUser) {
-                marker.addListener('click', (event) => {
+                marker.addListener('rightclick', (event) => {
                     $('#modifyPinID').val(pinData.pin_id);
                     $('#modifyPinName').val(pinData.pin_name);
                     $('#modifyPinDescription').val(pinData.pin_description);
@@ -362,7 +362,7 @@
                 });
             }
 
-            // initialize info window 
+            // initialize info window
             var infowindowContent = {
               title: `<p>${pinData.pin_name}</p>`,
               description: `<p>${pinData.pin_description}</p>`,
@@ -377,7 +377,7 @@
             })
 
             // display info window when clicked on pin
-            marker.addListener('mouseover', (event) => {
+            marker.addListener('click', (event) => {
               infowindow.open(map, marker);
             })
 
