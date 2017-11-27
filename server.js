@@ -56,6 +56,9 @@ app.get('/', (req, res) => {
   // res.render('index', templateVars);
 })
 
+//login route
+//checks user name and password
+//applies cookie to logged user
 app.post('/login', (req, res) => {
 
   let comparePassword = (passwordEntered, passwordStored) => {
@@ -77,6 +80,7 @@ app.post('/login', (req, res) => {
     })
 })
 
+//logout clears cookie session
 app.post('/logout', (req, res) => {
   req.session = null;
   res.redirect('/');
