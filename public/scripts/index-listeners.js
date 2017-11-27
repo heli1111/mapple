@@ -117,7 +117,6 @@ $(document).ready (function () {
         method: "GET",
         url: "/maps/load-user-contributions"
       }).done( function (maps) {
-        console.log("maps", maps)
           sortByLastUpdate(maps).forEach((map) => {
             $('#recent-maps').append(
               `<a href="/maps/${map.map_id}">

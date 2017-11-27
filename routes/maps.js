@@ -68,8 +68,7 @@ module.exports = (knex) => {
     router.get('/load-user-contributions', (req, res) => {
 
         knex
-          .select("maps.*")
-          .max("fav_count_table.fav_count")
+          .select("maps.*", "fav_count_table.fav_count")
           .from("maps")
           .leftOuterJoin(
             function () {
@@ -82,12 +81,31 @@ module.exports = (knex) => {
             },
             "fav_count_table.fav_map_id", "maps.map_id")
           .where('maps.map_user_id', req.session.user_id)
-          .join('pins', 'maps.map_id', 'pins.pin_map_id')
-          .where('pins.pin_user_id', req.session.user_id)
-          .groupBy('maps.map_id')
           .then( (result) => {
-            console.log(result)
-            res.json(result);
+            let first = result
+
+            knex
+              .select("maps.*")
+              .max("fav_count_table.fav_count")
+              .from("maps")
+              .leftOuterJoin(
+                function () {
+                  this
+                    .select("favorites.fav_map_id")
+                    .count("favorites.fav_user_id as fav_count")
+                    .from("favorites")
+                    .groupBy("favorites.fav_map_id")
+                    .as("fav_count_table")
+                },
+                "fav_count_table.fav_map_id", "maps.map_id")
+              .join('pins', 'maps.map_id', 'pins.pin_map_id')
+              .where('pins.pin_user_id', req.session.user_id)
+              .groupBy('maps.map_id')
+              .then( (second) => {
+                let appended = first.concat(second)
+                  res.json(appended);
+              })
+              .catch( (err) => {console.log('wrong', err)})
           })
           .catch( (err) => {
             res.status(400).send('Error happened, maps cannot be loaded');
