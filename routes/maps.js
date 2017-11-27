@@ -1,4 +1,6 @@
-//jl map routes
+//maps.js
+//routes for maps
+
 "use strict";
 
 const express = require('express');
@@ -17,6 +19,8 @@ module.exports = (knex) => {
       res.render('index', templateVars)
     })
 
+    //load map data for main map page
+    //selecting all map data and attaching the count of likes
     router.get('/load', (req, res) => {
         knex
           .select("maps.*", "fav_count_table.fav_count")
@@ -40,6 +44,8 @@ module.exports = (knex) => {
 
     });
 
+    //load map data for users page - favorites
+    //similar to the previous - difference is that the likes belong to the user
     router.get('/load-user-maps', (req, res) => {
 
         knex
@@ -65,6 +71,10 @@ module.exports = (knex) => {
           })
     });
 
+    //load map data for users page - contributions
+    //similar to the previous - difference is that two queries are appended
+    //the first collects the maps that the user created
+    //the second collects the maps where the user placed a pin
     router.get('/load-user-contributions', (req, res) => {
 
         knex
@@ -105,12 +115,15 @@ module.exports = (knex) => {
                 let appended = first.concat(second)
                   res.json(appended);
               })
-              .catch( (err) => {console.log('wrong', err)})
+              .catch( (err) => {
+                res.status(400).send('Error happened, maps cannot be loaded');
+              })
           })
           .catch( (err) => {
             res.status(400).send('Error happened, maps cannot be loaded');
           })
     });
+
     //render create new map page
     router.get('/new', (req,res) =>{
       if (req.session.user_id) {
@@ -118,7 +131,6 @@ module.exports = (knex) => {
           user: req.session.user_id
         }
 
-        console.log('landed at mapnew')
         res.render('mapnew', templateVars);
         return
 
@@ -126,7 +138,8 @@ module.exports = (knex) => {
       res.redirect('/maps/');
     });
 
-    // create new map
+    // create new map with the applicable data
+    //knex inserts data to the maps table
     router.post('/new', (req, res) => {
         let map = {
             map_name: req.body.name,
@@ -138,7 +151,6 @@ module.exports = (knex) => {
             map_image: req.body.image,
             map_user_id: req.body.user_id
         };
-        console.log(map);
         knex.insert(map)
         .returning('map_id')
         .into('maps')
@@ -168,58 +180,8 @@ module.exports = (knex) => {
         });
     });
 
-    // render single map page
-    router.get('/:map_id/pins', (req, res) => {
-
-        knex
-          .select('*')
-          .from('pins')
-          .where('pin_map_id', req.params.map_id)
-          .then( (result) => {
-            res.json(result)
-        }).catch((err) => {
-            res.status(500).send(err);
-        });
-    });
-
-    // create new map
-    router.post('/new', (req, res) => {
-      if(!req.session.user_id) {
-        res.redirect('/')
-      }
-
-      else {
-
-      console.log('yesss')
-      console.log(req.body)
-      // dataToInsert = {
-      //       map_name:         req.body.name,
-      //       map_description:  req.body.description,
-      //       map_image:        req.body.image,
-      //       map_createdAt:    req.body.createdAt,
-      //       map_last_updated: req.body.createdAt,
-      //       map_latitude:     req.body.coords.lat,
-      //       map_longitude:    req.body.coords.lng,
-      //       map_user_id:      req.body.user
-      // }
-
-        // knex
-        //   .insert([{
-
-        //     }])
-        //   .returning('map_id')
-        //   .into("maps")
-        //   .then( (id) => {
-        //     res.redirect(`/maps/${id}`)
-        //     })
-        //   .catch( (err) => {
-        //     res.status(501).send('Error happened, map cannot be created');
-        //   })
-        res.redirect('/')
-      }
-    });
-
     // favor a map
+    //based on the map id and the user id
     router.post('/:map_id/favor', (req, res) => {
       if (req.session.user_id) {
 
@@ -252,11 +214,9 @@ module.exports = (knex) => {
     // update map
     router.post('/:map_id', (req, res) => {
       let user_id = req.session.user_id;
-      console.log('user_id: ' + JSON.stringify(user_id));
       if (user_id) {
         knex("maps")
           .where("map_id", req.params.map_id)
-          // .returning("map_id") //if something need to be returned
           .update({
 
             map_name:         req.body.map_name,
@@ -275,8 +235,6 @@ module.exports = (knex) => {
     // delete map
     router.delete('/:map_id', (req, res) => {
       let user_id = req.session.user_id;
-      console.log('user_id: ' + JSON.stringify(user_id));
-      console.log('map_id: ' + req.params.map_id);
 
       if (user_id) {
         knex('pins')
