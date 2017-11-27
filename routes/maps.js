@@ -18,7 +18,10 @@ module.exports = (knex) => {
     })
 
     router.get('/load', (req, res) => {
+      console.log('hello')
         knex
+        .select('*')
+        .from('maps')
           .select("maps.*", "fav_count_table.fav_count")
           .from("maps")
           .leftOuterJoin(
@@ -52,7 +55,7 @@ module.exports = (knex) => {
         return
 
       }
-      res.redirect('/login');
+      res.redirect('/maps/');
     });
 
     // create new map
@@ -65,11 +68,14 @@ module.exports = (knex) => {
             map_latitude: req.body.latitude,
             map_longitude: req.body.longitude,
             map_image: req.body.image,
-            map_user_id: req.params.user_id
+            map_user_id: req.body.user_id
         };
         console.log(map);
-        knex.insert(map).into('maps').then((result) => {
-            res.send('OK');
+        knex.insert(map)
+        .returning('map_id')
+        .into('maps')
+        .then((result) => {
+          res.send(result)
         }).catch((err) => {
             res.status(500).send(err);
         });
@@ -148,19 +154,31 @@ module.exports = (knex) => {
     // favor a map
     router.post('/:map_id/favor', (req, res) => {
       if (req.session.user_id) {
-      knex
-        .insert([{
-          map_id:  req.params.map_id,
-          user_id: req.session.user_id
-          }])
-        .into("favorites")
-        .then( (result) => {
-          res.status(201);
-          })
-        .catch( (err) => {
-          res.status(501).send('Error happened, map cannot be favored');
-          })
+
+        knex('favorites')
+          .insert({
+            fav_map_id:  req.params.map_id,
+            fav_user_id: req.session.user_id
+            })
+          .then( (result) => {
+            res.status(201);
+            res.send('like');
+            })
+          .catch( (err) => {
+            knex('favorites')
+              .where('fav_map_id', req.params.map_id)
+              .andWhere('fav_user_id', req.session.user_id)
+              .del()
+              .then(function(result) {
+                res.send('unlike')
+              })
+              .catch( function (err) {
+                res.status(501).send('Error happened, map cannot be favored');
+              })
+            })
+          return;
       }
+            res.status(403).send('Error happened, map cannot be favored');
     });
 
     // update map
@@ -203,7 +221,7 @@ module.exports = (knex) => {
               .then((count) => {
                 res.status(200).send('OK');
               }).catch((err) => {
-                res.status(500).send(err);    
+                res.status(500).send(err);
               })
           }).catch((err) => {
             res.status(500).send(err);
