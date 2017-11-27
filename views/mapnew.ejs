@@ -75,6 +75,7 @@
 
                 // make map image URL
                 let map_image = mapImageURL(lat,lng,zoom,key);
+                let currentUser = Number($('#currentUser').text());
 
                 // prepare map data
                 let data = {
@@ -82,7 +83,8 @@
                     description: $('#addMapDescription').val(),
                     latitude: lat,
                     longitude: lng,
-                    image: map_image
+                    image: map_image,
+                    user_id: currentUser
                 }
                 console.log(data);
                 // send create map put request
@@ -93,7 +95,7 @@
                     contentType: 'application/json'
                 }).done((resp) => {
                     alert("map added!")
-                    window.location.href = "/maps";
+                    window.location.href = `/maps/${resp[0]}`;
                 }). fail((resp) => {
                     console.log(resp);
                     alert("FAILED TO ADD MAP");
@@ -111,7 +113,7 @@
                 $('#addMapLongitude').val(lng);
             });
             function mapImageURL (lat, lng, zoom, key) {
-                return mapImage =`https://maps.googleapis.com/maps/api/staticmap?center=${lat},${lng}&zoom=${zoom}&size=640x640&key=${key}`;
+                return mapImage =`https://maps.googleapis.com/maps/api/staticmap?center=${lat},${lng}&zoom=${zoom}&size=600x400&key=${key}`;
             };
         }
     </script>

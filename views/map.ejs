@@ -15,6 +15,7 @@
                 <h1><%=map.map_name%></h1>
                 <h3><%=map.map_description%></h3>
                 <button id="modifyMap" type="button" class="btn btn-default">Update/Delete Map</button>
+                <button id="like" type="button" class="btn btn-default">Like</button>
             </div>
         </div>
         <!-- google map -->
@@ -160,9 +161,27 @@
                 zoom: 8
             });
 
+            var mapId = Number(window.location.pathname.slice(6))
+
+            $('#like').click((event) => {
+
+              $.ajax({
+                url: '/maps/<%=map.map_id%>/favor',
+                method: "POST"
+              }).done(function(response){
+                if (response === 'like') {
+                  alert('liked')
+                }
+                else {
+                  alert('unliked')
+                }
+              }).fail(function(){
+                alert(':(')
+              })
+            })
             // map modify/delete button click listener - shows modal
             $('#modifyMap').click((event) => {
-                console.log('modify map!');   
+                console.log('modify map!');
                 // initialize modal form data
                 $('#modifyMapName').val(`<%=map.map_name%>`);
                 $('#modifyMapDescription').val(`<%=map.map_description%>`);
@@ -179,7 +198,7 @@
                 }).done((resp) => {
                     console.log(resp);
                     alert("map deleted!");
-                    window.location.href = "/maps";
+                    window.location.href = "/maps/";
                 }).fail((resp) => {
                     console.log(resp);
                     alert("FAILED TO DELETE PIN");
@@ -204,12 +223,12 @@
                     contentType: 'application/json'
                 }).done((resp) => {
                     console.log(resp);
-                    alert("map deleted!");
+                    alert("map updated!");
                     window.location.href = "/maps/<%=map.map_id%>";
                 }).fail((resp) => {
                     console.log(resp);
                     alert("FAILED TO ADD PIN");
-                }); 
+                });
                 $('#modifyPinModal').modal('hide');
             });
 
@@ -243,9 +262,9 @@
                 $('#addPinModal').modal('hide');
             });
 
-            // pin delete button listener 
+            // pin delete button listener
             $('#deletePin').click(() => {
-                
+
                 // send create pin put request
                 let pin_id = $('#modifyPinID').val();
 
@@ -265,7 +284,7 @@
             });
 
 
-            // pin update button listener 
+            // pin update button listener
             $('#updatePin').click(() => {
                 let pin_id = $('#modifyPinID').val();
                 // prepare data object
@@ -286,10 +305,10 @@
                 }).fail((resp) => {
                     console.log(resp);
                     alert("FAILED TO ADD PIN");
-                }); 
+                });
 
                 $('#modifyPinModal').modal('hide');
-                
+
             });
 
             // map click listener - show modal to add pin

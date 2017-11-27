@@ -19,6 +19,21 @@ module.exports = [
         user_username:'minion',
         user_password:'123',
         user_email:'minion@mapple.ca'
+    },
+    {
+        user_username:'bob',
+        user_password:'123',
+        user_email:'bob@mapple.ca'
+    },
+    {
+        user_username:'erica',
+        user_password:'123',
+        user_email:'erica@mapple.ca'
+    },
+    {
+        user_username:'garfield',
+        user_password:'123',
+        user_email:'garfield@mapple.ca'
     }
 ]
 
