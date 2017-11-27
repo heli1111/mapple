@@ -1,13 +1,14 @@
 <!DOCTYPE html>
+<!-- template for creating new map -->
 <html lang="en">
-
-  <%- include partials/_head %>
-  <style>
-    #map {
-      height: 400px;
-      width: 100%;
-    }
-  </style>
+    <%- include partials/_head %>
+    <!-- set google map display -->
+    <style>
+        #map {
+        height: 400px;
+        width: 100%;
+        }
+    </style>
     <body>
         <% include partials/_navbar %>
         <div class="container">
@@ -48,14 +49,15 @@
             </div>
             </div>
         </div>
+    
         <% include partials/_footer %>
-    <script
-    src="https://code.jquery.com/jquery-1.12.4.min.js"
-    integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ="
-    crossorigin="anonymous"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+        <script
+        src="https://code.jquery.com/jquery-1.12.4.min.js"
+        integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ="
+        crossorigin="anonymous"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
 
-    <!-- google map api -->
+    <!-- google map js functions -->
     <script>
         initMap = () => {
             // initializing blank map
@@ -108,10 +110,12 @@
                 let lat = event.latLng.lat();
                 let lng = event.latLng.lng();
 
-                // // inject into field
+                // inject into field
                 $('#addMapLatitude').val(lat);
                 $('#addMapLongitude').val(lng);
             });
+
+            // function that generates static image of a particular map
             function mapImageURL (lat, lng, zoom, key) {
                 return mapImage =`https://maps.googleapis.com/maps/api/staticmap?center=${lat},${lng}&zoom=${zoom}&size=600x400&key=${key}`;
             };

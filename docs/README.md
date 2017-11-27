@@ -6,8 +6,14 @@ The MAPPLE APP incorporates the Google Map API and provide a social platform for
 
 Fork this repository, then clone your fork of this repository.
 Install dependencies using the npm install command.
+In your terminal: 
+$ knex migrate:latest
+$ knex seed:run
 Start the web server using the npm run local command. The app will be served at http://localhost:8080/.
 Go to http://localhost:8080/ in your browser.
+This website do not allow user registration, to log in type:
+username: "soma" or "jessica"
+password: 123
 
 ## Dependencies
 “body-parser”: “^1.15.2",

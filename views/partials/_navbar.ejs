@@ -1,3 +1,5 @@
+<!-- nav bar partial -->
+
 <nav class="navbar navbar-default">
     <div class="container-fluid">
 
@@ -8,39 +10,35 @@
             </a>
         </div>
 
-<% if (user) { %>
-
-        <span id="currentUser" style="display: none"><%= user %> </span>
-
-        <form class="navbar-form navbar-right">
-            <div class="form-group">
-                <input id="logout" type="submit" value="Logout" class="btn btn-default btn-sm" style="width:90px;margin-right:10px;">
-            </div>
-        </form>
-
-<% } else { %>
-
-        <form class="navbar-form navbar-right">
-            <div class="form-group">
-                <input id="login-username" type="text" style="margin-right:10px;" class="form-control" placeholder="Username">
-                <input id="login-password" type="password" style="margin-right:10px;" class="form-control" placeholder="Password">
-                <input id="login" type="submit" value="Login" class="btn btn-default btn-sm" style="width:90px;margin-right:10px;">
-            </div>
-        </form>
-
-<% } %>
-
+        <!-- user authentication -->
+        <% if (user) { %>
+            <span id="currentUser" style="display: none"><%= user %> </span>
+            <form class="navbar-form navbar-right">
+                <div class="form-group">
+                    <input id="logout" type="submit" value="Logout" class="btn btn-default btn-sm" style="width:90px;margin-right:10px;">
+                </div>
+            </form>
+        <% } else { %>
+            <form class="navbar-form navbar-right">
+                <div class="form-group">
+                    <input id="login-username" type="text" style="margin-right:10px;" class="form-control" placeholder="Username">
+                    <input id="login-password" type="password" style="margin-right:10px;" class="form-control" placeholder="Password">
+                    <input id="login" type="submit" value="Login" class="btn btn-default btn-sm" style="width:90px;margin-right:10px;">
+                </div>
+            </form>
+        <% } %>
     </div>
 </nav>
 
+<!-- show buttons if user login -->
 <nav>
-  <% if (user) { %>
-    <div class="breadcrumb" style="margin-top:-20px;min-height:55px;">
-
-        <button id="new-map" type="button" style="width:90px;margin-right:10px;" class="btn btn-default">New Map</button>
-        <button id="my-maps" type="button" style="width:90px" class="btn btn-default">My Maps</button>
-    </div>
-  <% } %>
+    <% if (user) { %>
+        <div class="breadcrumb" style="margin-top:-20px;min-height:55px;">
+            <button id="new-map" type="button" style="width:90px;margin-right:10px;" class="btn btn-default">New Map</button>
+            <button id="my-maps" type="button" style="width:90px" class="btn btn-default">My Maps</button>
+        </div>
+    <% } %>
 </nav>
 
+<!-- insert js event listener -->
 <script type="text/javascript" src="/scripts/event_listeners.js"></script>

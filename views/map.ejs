@@ -27,32 +27,32 @@
 
         <!-- modal form to modify map -->
         <div class="row">
-                <div id="modifyMapModal" class="modal fade" tabindex="-1" role="dialog">
-                    <div class="modal-dialog" role="document">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                                <h4 class="modal-title">Modify Map</h4>
-                            </div>
-                            <div class="modal-body">
-                                <form>
-                                    <div class="form-group">
-                                        <label for="modifyMapName" class="control-label">Name: </label>
-                                        <input type="text" class="form-control" id="modifyMapName">
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="modifyMapDescription" class="control-label">Description: </label>
-                                        <input type="text" class="form-control" id="modifyMapDescription">
-                                    </div>
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                                <button id="deleteMap" type="button" class="btn btn-danger">Delete Map</button>
-                                <button id="updateMap" type="button" class="btn btn-primary">Update Map</button>
-                            </div>
-                        </div><!-- /.modal-content -->
-                    </div><!-- /.modal-dialog -->
-                </div><!-- /.modal -->
+            <div id="modifyMapModal" class="modal fade" tabindex="-1" role="dialog">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                            <h4 class="modal-title">Modify Map</h4>
+                        </div>
+                        <div class="modal-body">
+                            <form>
+                                <div class="form-group">
+                                    <label for="modifyMapName" class="control-label">Name: </label>
+                                    <input type="text" class="form-control" id="modifyMapName">
+                                </div>
+                                <div class="form-group">
+                                    <label for="modifyMapDescription" class="control-label">Description: </label>
+                                    <input type="text" class="form-control" id="modifyMapDescription">
+                                </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                            <button id="deleteMap" type="button" class="btn btn-danger">Delete Map</button>
+                            <button id="updateMap" type="button" class="btn btn-primary">Update Map</button>
+                        </div>
+                    </div><!-- /.modal-content -->
+                </div><!-- /.modal-dialog -->
+            </div><!-- /.modal -->
         </div>
 
 
@@ -100,88 +100,91 @@
 
         <!-- form to modify pins -->
         <div class="row">
-                <div id="modifyPinModal" class="modal fade" tabindex="-1" role="dialog">
-                    <div class="modal-dialog" role="document">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                                <h4 class="modal-title">Modify/Delete Pin</h4>
-                            </div>
-                            <div class="modal-body">
-                                <form>
-                                    <div class="form-group">
-                                        <label for="modifyPinID" class="control-label">ID: </label>
-                                        <input type="text" class="form-control" id="modifyPinID" disabled>
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="modifyPinName" class="control-label">Name: </label>
-                                        <input type="text" class="form-control" id="modifyPinName">
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="modifyPinDescription" class="control-label">Description: </label>
-                                        <input type="text" class="form-control" id="modifyPinDescription">
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="modifyPinImage" class="control-label">Image URL: </label>
-                                        <input type="text" class="form-control" id="modifyPinImage">
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="modifyPinLatitude" class="control-label">Latitude: </label>
-                                        <input type="text" class="form-control" id="modifyPinLatitude" disabled>
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="modifyPinLongitude" class="control-label">Longitude: </label>
-                                        <input type="text" class="form-control" id="modifyPinLongitude" disabled>
-                                    </div>
-                                </form>
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                                <button id="deletePin" type="button" class="btn btn-danger">Delete Pin</button>
-                                <button id="updatePin" type="button" class="btn btn-primary">Update Pin</button>
-                            </div>
-                        </div><!-- /.modal-content -->
-                    </div><!-- /.modal-dialog -->
-                </div><!-- /.modal -->
-
-            </div>
-
+            <div id="modifyPinModal" class="modal fade" tabindex="-1" role="dialog">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                            <h4 class="modal-title">Modify/Delete Pin</h4>
+                        </div>
+                        <div class="modal-body">
+                            <form>
+                                <div class="form-group">
+                                    <label for="modifyPinID" class="control-label">ID: </label>
+                                    <input type="text" class="form-control" id="modifyPinID" disabled>
+                                </div>
+                                <div class="form-group">
+                                    <label for="modifyPinName" class="control-label">Name: </label>
+                                    <input type="text" class="form-control" id="modifyPinName">
+                                </div>
+                                <div class="form-group">
+                                    <label for="modifyPinDescription" class="control-label">Description: </label>
+                                    <input type="text" class="form-control" id="modifyPinDescription">
+                                </div>
+                                <div class="form-group">
+                                    <label for="modifyPinImage" class="control-label">Image URL: </label>
+                                    <input type="text" class="form-control" id="modifyPinImage">
+                                </div>
+                                <div class="form-group">
+                                    <label for="modifyPinLatitude" class="control-label">Latitude: </label>
+                                    <input type="text" class="form-control" id="modifyPinLatitude" disabled>
+                                </div>
+                                <div class="form-group">
+                                    <label for="modifyPinLongitude" class="control-label">Longitude: </label>
+                                    <input type="text" class="form-control" id="modifyPinLongitude" disabled>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                            <button id="deletePin" type="button" class="btn btn-danger">Delete Pin</button>
+                            <button id="updatePin" type="button" class="btn btn-primary">Update Pin</button>
+                        </div>
+                    </div><!-- /.modal-content -->
+                </div><!-- /.modal-dialog -->
+            </div><!-- /.modal -->
+        </div>
     </div>
+
     <% include partials/_footer %>
+
+    <!-- JQuery and Bootstrap -->
+
+    
     <script
       src="https://code.jquery.com/jquery-1.12.4.min.js"
       integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ="
       crossorigin="anonymous"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+    
+    <!-- JS to render the google map API -->
     <script>
-
         initMap = () => {
             let map = new google.maps.Map(document.getElementById('map'), {
                 center: {lat: <%=map.map_latitude%>, lng: <%=map.map_longitude%>},
                 zoom: 8
             });
 
+            // add like button event listener handler
             var mapId = Number(window.location.pathname.slice(6))
-
             $('#like').click((event) => {
-
               $.ajax({
                 url: '/maps/<%=map.map_id%>/favor',
                 method: "POST"
               }).done(function(response){
                 if (response === 'like') {
-                  $('#like').text('Liked')
-
-                  alert('liked')
+                  $('#like').text('Liked');
+                  alert('liked');
                 }
                 else {
-                  $('#like').text('Like')
-                  alert('unliked')
+                  $('#like').text('Like');
+                  alert('unliked');
                 }
               }).fail(function(){
-                alert(':(')
+                alert('error');
               })
             })
+
             // map modify/delete button click listener - shows modal
             $('#modifyMap').click((event) => {
                 console.log('modify map!');
@@ -206,10 +209,8 @@
                     console.log(resp);
                     alert("FAILED TO DELETE PIN");
                 });
-
                 $('#modifyMapModal').modal('hide');
             });
-
 
             // map update button listener (on modal)
             $('#updateMap').click(() => {
@@ -237,7 +238,6 @@
 
             // pin save button listener
             $('#addPinSave').click(() => {
-
                 // prepare data object
                 let data = {
                     pin_name: $('#addPinName').val(),
@@ -258,7 +258,6 @@
                     data['pin_id'] = resp;
                     addMarker(data, map);
                 }).fail((resp) => {
-                    console.log(resp);
                     alert("FAILED TO ADD PIN");
                 });
                 // close modal
@@ -270,19 +269,14 @@
 
                 // send create pin put request
                 let pin_id = $('#modifyPinID').val();
-
-                console.log('starting deletion for ' + pin_id);
-
                 $.ajax({
                     url: '<%=map.map_id%>/pins/' + pin_id,
                     type: 'DELETE',
                 }).done((resp) => {
                     removeMarker(pin_id);
                 }).fail((resp) => {
-                    console.log(resp);
                     alert("FAILED TO DELETE PIN");
                 });
-
                 $('#modifyPinModal').modal('hide');
             });
 
@@ -307,19 +301,17 @@
                     refreshMarker(pin_id);
                 }).fail((resp) => {
                     console.log(resp);
-                    alert("FAILED TO ADD PIN");
+                    alert("error");
                 });
-
                 $('#modifyPinModal').modal('hide');
-
             });
 
-        var currentUser = Number($('#currentUser').text());
-
+            // check user authentication
+            var currentUser = Number($('#currentUser').text());
+            
             // map click listener - show modal to add pin
             map.addListener('dblclick', (event) => {
               if (currentUser) {
-
                 // get lat/lng
                 let lat = event.latLng.lat();
                 let lng = event.latLng.lng();
@@ -333,10 +325,8 @@
 
                 // show modal
                 $('#addPinModal').modal('show');
-
               }
             });
-
 
             // get all pins and show on the map
             $.get('<%=map.map_id%>/pins', (resp) => {
@@ -345,11 +335,9 @@
                     addMarker(pinData, map);
                 }
             });
-
         };
 
         let markers = {};
-
         // display marker on the map
         addMarker = (pinData, map) => {
             let marker = new google.maps.Marker({
@@ -360,18 +348,21 @@
                 label: pinData.pin_name,
                 map: map
             });
-                      if (currentUser) {
+        
+            // only logged in users can add pin
+            if (currentUser) {
+                marker.addListener('click', (event) => {
+                    $('#modifyPinID').val(pinData.pin_id);
+                    $('#modifyPinName').val(pinData.pin_name);
+                    $('#modifyPinDescription').val(pinData.pin_description);
+                    $('#modifyPinImage').val(pinData.pin_image);
+                    $('#modifyPinLatitude').val(pinData.pin_latitude);
+                    $('#modifyPinLongitude').val(pinData.pin_longitude);
+                    $('#modifyPinModal').modal('show');
+                });
+            }
 
-            marker.addListener('dblclick', (event) => {
-                $('#modifyPinID').val(pinData.pin_id);
-                $('#modifyPinName').val(pinData.pin_name);
-                $('#modifyPinDescription').val(pinData.pin_description);
-                $('#modifyPinImage').val(pinData.pin_image);
-                $('#modifyPinLatitude').val(pinData.pin_latitude);
-                $('#modifyPinLongitude').val(pinData.pin_longitude);
-                $('#modifyPinModal').modal('show');
-            });
-}
+            // initialize info window 
             var infowindowContent = {
               title: `<p>${pinData.pin_name}</p>`,
               description: `<p>${pinData.pin_description}</p>`,
@@ -385,7 +376,8 @@
                 ${infowindowContent.image}`
             })
 
-            marker.addListener('click', (event) => {
+            // display info window when clicked on pin
+            marker.addListener('mouseover', (event) => {
               infowindow.open(map, marker);
             })
 
@@ -419,9 +411,10 @@
         };
 
     </script>
+
+    <!-- only logged in users can modify map and like map -->
     <script type="text/javascript">
       var currentUser = Number($('#currentUser').text());
-
       if (currentUser) {
         $('#modifyMap').show()
         $('#like').show()
@@ -432,8 +425,7 @@
       }
     </script>
 
-
-    <!--<script type="text/javascript" src="/scripts/event_listeners.js"></script>-->
+    <!-- google map api -->
     <script async defer
       src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCuw3H9Ze9hLg4XxnnJA6EpzPYs1CAK6qU&callback=initMap">
     </script>

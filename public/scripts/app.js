@@ -1,21 +1,22 @@
 //----------------------------------------------------------------------------
-//these functions compile the maps on the main page that have the most favors
+// these functions compile the maps on the main page that have the most favors
 
-//helper function for sorting maps from the database by the number of favors
+// helper function for sorting maps from the database by the number of favors
+
 function sortByFavor (maps) {
   return maps.sort( function (a, b) {
     return b.fav_count - a.fav_count;
   })
 };
 
-//appending linked image files to the pre-set container
+// appending linked image files to the pre-set container
 function addFavoriteMap(map, index) {
   $(`#map${index}`).append(
     `<a href="https://localhost:8080/map/${map.map_id}"><img src="${map.map_image}" alt="${map.map_name}"></a>`
     )
 }
 
-//sorts data by favors, gets the top 3, loops over them
+// sorts data by favors, gets the top 3, loops over them
 function compileFavoredMaps (data) {
   sortByFavor(data.mapData).slice(0,2).forEach( function (map, index) {
     addFavoriteMap(map, index);
@@ -25,7 +26,7 @@ function compileFavoredMaps (data) {
 //-------------------------------------------------------------------------------
 // these functions compile the maps ordered by time of the last update
 
-//helper function for sorting maps from the database by the time of last update
+// helper function for sorting maps from the database by the time of last update
 function sortByLastUpdate (maps) {
   return maps.sort( function (a, b) {
     return b.map_last_updated - a.map_last_updated;
@@ -124,18 +125,6 @@ function initMap() {
     })
   }
 
-  // else if (path.match('/maps/')) {
-  //   $(function () {
-  //     $.ajax({
-  //       method: "GET",
-  //       url: "/maps/"
-  //     }).done( function (maps) {
-  //       compileFavoredMaps(maps);
-  //       compileRecentMaps(maps);
-  //     })
-  //   })
-  // }
-
   else if (path.match('/maps/$')) {
     $(function () {
       $.ajax({
@@ -146,18 +135,6 @@ function initMap() {
       })
     })
   }
-
-  // else if (path.match('/users/')) {
-  //   $(function () {
-  //     $.ajax({
-  //       method: "GET",
-  //       url: "/users/:id"
-  //     }).done( function (maps) {
-  //       compileFavoredMaps(maps.usersFavorites);
-  //       compileRecentMaps(maps.usersContributions);
-  //     })
-  //   })
-  // }
 
   else if (path.match('/users/')) {
     $(function () {
@@ -175,80 +152,3 @@ function initMap() {
 
 
 
-
-
-/*
-
-
-//this feeds the main page
-$(() => {
-  $.ajax({
-      method: "GET",
-      url: "/map/"
-  }).done((maps) => {
-    //1. here comes a reference to a function that compiles the top three maps
-    compileMostFavoredMaps(maps)
-    //2. here comes a reference to a function that compiles the nine most recent maps
-    compileMostRecentMaps(maps)
-    //data comes in the following format:
-  //     {
-  //       map_id: ,
-  //       map_name: ,
-  //       map_description: ,
-  //       map_image: ,
-  //       map_createdAt: ,
-  //       map_last_updated: ,
-  //       map_latitude: ,
-  //       map_longitude: ,
-  //       map_user_id: ,
-  //       pin_id: ,
-  //       pin_name: ,
-  //       pin_description: ,
-  //       pin_image: ,
-  //       pin_createdAt: ,
-  //       pin_user_id: ,
-  //       pin_map_id: ,
-  //       fav_count:
-  //     }
-  // })
-});
-
-//this feeds a particular map's page
-$(() => {
-  var id = //map's id
-  var url = `/map/${id}`
-  $.ajax({
-      method: "GET",
-      url: "/map/"
-  }).done((maps) => {
-    // function that complices a map page
-    // data in format above
-});
-
-
-//this feeds a user's page
-$(() => {
-  var id = //logged user
-  var url = `/user/${id}`
-  $.ajax({
-      method: "GET",
-      url: url
-  }).done((maps) => {
-    //here comes a reference to a function that compiles a map element
-    //data comes in the following format:
-      // { usersFavorites: {...}, usersContributions: {...} }
-      // for {...} see above
-  })
-});
-
-// $(() => {
-//   $.ajax({
-//     method: "GET",
-//     url: "/api/users"
-//   }).done((users) => {
-//     for(user of users) {
-//       $("<div>").text(user.name).appendTo($("h1"));
-//     }
-//   });;
-// });
-*/
