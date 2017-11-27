@@ -21,7 +21,8 @@ $(document).ready (function () {
   }
 
   else if (currentPage.match('/users/')) {
-    addUserMapsToMapPage();
+    addUsersFavoriteMaps();
+    addUsersContributions();
   }
 
   function addMapsToMapPage () {
@@ -77,46 +78,18 @@ $(document).ready (function () {
     })
   }
 
-  function addUserMapsToMapPage () {
+  function addUsersFavoriteMaps () {
     $(function () {
       $.ajax({
         method: "GET",
-        url: "/maps/load"
+        url: "/maps/load-user-maps"
       }).done( function (maps) {
 
-          var usersMaps = maps.filter( function(map) {
-            return map.map_user_id === usersPage;
-          })
+          $('#favorite-maps').prev().text('My Favorite Maps')
+          $('#recent-maps').prev().text('Maps I added pins to')
 
-          var usersContributions = maps.filter( function(map) {
-            return map.map_user_id === usersPage;
-          })
-
-          $('#favorite-maps').prev().text('Your Favorite Maps')
-          $('#recent-maps').prev().text('Maps you have edited')
-
-          sortByFavor(usersMaps).slice(0,3).forEach((map) => {
+          sortByFavor(maps).forEach((map) => {
             $('#favorite-maps').append(
-              `<a href="/maps/${map.map_id}">
-                <div class="map-list-item">
-                  <li>
-                    <img src="${map.map_image}" class="map-image">
-                    <ul class="map-info">
-                      <li class="map-name">${map.map_name}</li>
-                      <li class="map-likes"><b>${map.fav_count || 0}</b> users liked this map</li>
-                      <li class="map-description">${map.map_description}</li>
-                      <li>Last Update: ${map.map_last_updated}</li>
-                      <li>Map ID: ${map.map_id}</li>
-                      <li>User: ${map.map_user_id}</li>
-                    </ul>
-                  </li>
-                  </div>
-                </a><br>`
-              )
-          })
-
-          sortByLastUpdate(usersMaps).forEach((map) => {
-            $('#recent-maps').append(
               `<a href="/maps/${map.map_id}">
                 <div class="map-list-item">
                   <li>
@@ -138,6 +111,35 @@ $(document).ready (function () {
     })
   }
 
+  function addUsersContributions () {
+    $(function () {
+      $.ajax({
+        method: "GET",
+        url: "/maps/load-user-contributions"
+      }).done( function (maps) {
+        console.log("maps", maps)
+          sortByLastUpdate(maps).forEach((map) => {
+            $('#recent-maps').append(
+              `<a href="/maps/${map.map_id}">
+                <div class="map-list-item">
+                  <li>
+                    <img src="${map.map_image}" class="map-image">
+                    <ul class="map-info">
+                      <li class="map-name">${map.map_name}</li>
+                      <li class="map-likes"><b>${map.fav_count || 0}</b> users liked this map</li>
+                      <li class="map-description">${map.map_description}</li>
+                      <li>Last Update: ${map.map_last_updated}</li>
+                      <li>Map ID: ${map.map_id}</li>
+                      <li>User: ${map.map_user_id}</li>
+                    </ul>
+                  </li>
+                  </div>
+                </a><br>`
+              )
+          })
+        })
+    })
+  }
 
 
 

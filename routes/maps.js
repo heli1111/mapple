@@ -18,10 +18,7 @@ module.exports = (knex) => {
     })
 
     router.get('/load', (req, res) => {
-      console.log('hello')
         knex
-        .select('*')
-        .from('maps')
           .select("maps.*", "fav_count_table.fav_count")
           .from("maps")
           .leftOuterJoin(
@@ -43,6 +40,59 @@ module.exports = (knex) => {
 
     });
 
+    router.get('/load-user-maps', (req, res) => {
+
+        knex
+          .select("maps.*", "fav_count_table.fav_count")
+          .from("maps")
+          .leftOuterJoin(
+            function () {
+              this
+                .select("favorites.fav_map_id")
+                .count("favorites.fav_user_id as fav_count")
+                .from("favorites")
+                .groupBy("favorites.fav_map_id")
+                .as("fav_count_table")
+            },
+            "fav_count_table.fav_map_id", "maps.map_id")
+          .join('favorites', 'maps.map_id', 'favorites.fav_map_id')
+          .where('fav_user_id', req.session.user_id)
+          .then( (result) => {
+            res.json(result);
+          })
+          .catch( (err) => {
+            res.status(400).send('Error happened, maps cannot be loaded');
+          })
+    });
+
+    router.get('/load-user-contributions', (req, res) => {
+
+        knex
+          .select("maps.*")
+          .max("fav_count_table.fav_count")
+          .from("maps")
+          .leftOuterJoin(
+            function () {
+              this
+                .select("favorites.fav_map_id")
+                .count("favorites.fav_user_id as fav_count")
+                .from("favorites")
+                .groupBy("favorites.fav_map_id")
+                .as("fav_count_table")
+            },
+            "fav_count_table.fav_map_id", "maps.map_id")
+          .where('maps.map_user_id', req.session.user_id)
+          .join('pins', 'maps.map_id', 'pins.pin_map_id')
+          .where('pins.pin_user_id', req.session.user_id)
+          .groupBy('maps.map_id')
+          .then( (result) => {
+            console.log(result)
+            res.json(result);
+          })
+          .catch( (err) => {
+            res.status(400).send('Error happened, maps cannot be loaded');
+          })
+    });
     //render create new map page
     router.get('/new', (req,res) =>{
       if (req.session.user_id) {

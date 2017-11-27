@@ -170,9 +170,12 @@
                 method: "POST"
               }).done(function(response){
                 if (response === 'like') {
+                  $('#like').text('Liked')
+
                   alert('liked')
                 }
                 else {
+                  $('#like').text('Like')
                   alert('unliked')
                 }
               }).fail(function(){
@@ -311,8 +314,11 @@
 
             });
 
+        var currentUser = Number($('#currentUser').text());
+
             // map click listener - show modal to add pin
-            map.addListener('click', (event) => {
+            map.addListener('dblclick', (event) => {
+              if (currentUser) {
 
                 // get lat/lng
                 let lat = event.latLng.lat();
@@ -328,7 +334,9 @@
                 // show modal
                 $('#addPinModal').modal('show');
 
+              }
             });
+
 
             // get all pins and show on the map
             $.get('<%=map.map_id%>/pins', (resp) => {
@@ -357,7 +365,9 @@
                 icon: icon,
                 map: map
             });
-            marker.addListener('click', (event) => {
+                      if (currentUser) {
+
+            marker.addListener('dblclick', (event) => {
                 $('#modifyPinID').val(pinData.pin_id);
                 $('#modifyPinName').val(pinData.pin_name);
                 $('#modifyPinDescription').val(pinData.pin_description);
@@ -366,6 +376,24 @@
                 $('#modifyPinLongitude').val(pinData.pin_longitude);
                 $('#modifyPinModal').modal('show');
             });
+}
+            var infowindowContent = {
+              title: `<p>${pinData.pin_name}</p>`,
+              description: `<p>${pinData.pin_description}</p>`,
+              image: `<img src='${pinData.pin_image}' height='200'>`
+            }
+
+            var infowindow = new google.maps.InfoWindow({
+              content:
+                `${infowindowContent.title}
+                ${infowindowContent.description}
+                ${infowindowContent.image}`
+            })
+
+            marker.addListener('click', (event) => {
+              infowindow.open(map, marker);
+            })
+
             markers[pinData.pin_id] = {
                 data: pinData,
                 marker: marker
@@ -395,6 +423,18 @@
                 });
         };
 
+    </script>
+    <script type="text/javascript">
+      var currentUser = Number($('#currentUser').text());
+
+      if (currentUser) {
+        $('#modifyMap').show()
+        $('#like').show()
+      }
+      else {
+        $('#modifyMap').hide()
+        $('#like').hide()
+      }
     </script>
 
 
